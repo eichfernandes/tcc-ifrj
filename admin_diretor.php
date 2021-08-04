@@ -30,7 +30,7 @@
                     <form method="post">
                         <input class="searchbar" size="25" name="pesquisa" placeholder="Pesquisar"
                                value="<?php if(!empty($_POST['pesquisa'])){echo $_POST['pesquisa'];}; ?>">
-                        <select name="ordem" style="float: right; padding: 7px 9px;" class="searchbar" onchange="this.form.submit()">
+                        <select name="ordem" style="float: right; padding: 7px 9px;" class="order" onchange="this.form.submit()">
                             <option <?php if(empty($_POST['ordem'])||$_POST['ordem']=='id_diretor'){echo "selected";}?> 
                                 value="id_diretor">ID ↓</option>
                             <option <?php if(!empty($_POST['ordem'])&&$_POST['ordem']=='id_diretor desc'){echo "selected";}?>
