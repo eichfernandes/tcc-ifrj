@@ -91,6 +91,25 @@ footer a:hover{
     border-radius: 12px;
     background-color: #16181d;
 }
+.listclick{
+    border-radius: 6px;
+    background-color: #2f3037;
+    padding: 10px 12px;
+    margin-top: 10px;
+}
+.listclick:hover{
+    background-color: rgb(47, 48, 55, 0.6);
+    cursor: pointer;
+}
+.searchbar{
+    border-radius: 6px;
+    background-color: #2f3037;
+    padding: 8px 10px;
+    margin-bottom: 15px;
+    border: none;
+    outline: none;
+    font-size: 18px;
+}
 
 
 /*///// Login /////*/

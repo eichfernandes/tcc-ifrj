@@ -10,7 +10,7 @@
     $usuario = mysqli_real_escape_string($mysqli, $_POST['usuario']);
     $senha = mysqli_real_escape_string($mysqli, $_POST['senha']);
     
-    $query = "select id_usuario, nome, sobrenome from usuarios where usuario = '{$usuario}' and senha = md5('{$senha}')";
+    $query = "select id_usuario, nome, sobrenome, adm from usuarios where usuario = '{$usuario}' and senha = md5('{$senha}')";
     
     $result = mysqli_query($mysqli, $query);
     
@@ -22,6 +22,7 @@
         $_SESSION['usuario']=$usuario;
         $_SESSION['nome']=$row['nome'];
         $_SESSION['sobrenome']=$row['sobrenome'];
+        $_SESSION['adm']=$row['adm'];
         header('Location: index.php');
     }
     else{
