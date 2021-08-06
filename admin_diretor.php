@@ -19,14 +19,14 @@
         <link rel="shortcut icon" href="icone.png" type="image/x-png">
     </head>
     <body>
-        <div style="min-height: 100vh;"><!-- Esta div está relacionada a tela e ajuda a ajustar as restantes -->
+        <div class="semibody"><!-- Esta div está relacionada a tela e ajuda a ajustar as restantes -->
         
         <!-- Cabeçalho -->
         <?php include "header.php" ?> <!-- Cabeçalho da Página -->
         
         <!-- Conteúdo -->
         <div style="display: flex; justify-content: space-between; align-items: center; height: 100%;">
-            <div class="content" style="width: 60%;"><!-- Define o que estará no conteúdo central -->
+            <div class="content" style="width: 780px;"><!-- Define o que estará no conteúdo central -->
                 <div class="block"><!-- Cada div block é um bloco de conteúdo -->
                     
                     <!-- PUXANDO DADOS -->

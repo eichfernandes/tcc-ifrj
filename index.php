@@ -11,7 +11,7 @@ session_start();
         <link rel="shortcut icon" href="icone.png" type="image/x-png">
     </head>
     <body>
-        <div style="min-height: 100vh;"><!-- Esta div está relacionada a tela e ajuda a ajustar as restantes -->
+        <div class="semibody"><!-- Esta div está relacionada a tela e ajuda a ajustar as restantes -->
         
         <!-- Cabeçalho -->
         <?php include "header.php" ?> <!-- Cabeçalho da Página -->
