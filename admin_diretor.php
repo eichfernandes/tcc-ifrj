@@ -26,7 +26,7 @@
         
         <!-- Conteúdo -->
         <div style="display: flex; justify-content: space-between; align-items: center; height: 100%;">
-            <div class="content" style="width: 40%;"><!-- Define o que estará no conteúdo central -->
+            <div class="content" style="width: 60%;"><!-- Define o que estará no conteúdo central -->
                 <div class="block"><!-- Cada div block é um bloco de conteúdo -->
                     
                     <!-- PUXANDO DADOS -->
@@ -99,9 +99,19 @@
                     ?>
                     
                     <!-- ADICIONAR FILMES -->
-                    <div  style="font-size: 20px; margin: 20px 12px; text-align: center;">
+                    <div  style="font-size: 20px; margin: 20px 12px 0px;">
                         <form method="post" action="adicionar_filme.php">
-                            <h2>Adicionar Filme</h2>
+                            <h2 style="margin: 10px 0px;">Adicionar Filme</h2>
+                            
+                            ID Diretor 2: <input name="dir2" type="number" class="searchbar" min="1" max="99999999" size="8"
+                                style="margin: 10px 0px 0px;" placeholder="(Opcional)"><br>
+                            
+                            ID Diretor 3: <input name="dir3" type="number" class="searchbar" min="1" max="99999999" size="8"
+                                style="margin: 10px 0px 0px;" placeholder="(Opcional)"><br>
+                            
+                            ID Diretor 4: <input name="dir4" type="number" class="searchbar" min="1" max="99999999" size="8"
+                                style="margin: 10px 0px 0px;" placeholder="(Opcional)"><br>
+                            
                             Título: <input name="titulo" type="text" class="searchbar" maxlength="100" size="30"
                                 style="margin: 10px 0px 0px;" placeholder="Título em Inglês ou Mais Famoso"><br>
 
@@ -112,7 +122,8 @@
                                 style="margin: 10px 0px 0px;" placeholder="(Ano)"><br>
                             
                             <input name="idir" type="hidden" value="<?php echo $idir; ?>">
-                            <input type="submit" class="but" value="Adicionar"  style="text-align: center;font-size: 16px; margin-top: 10px;"/>
+                            <input type="submit" class="but" value="Adicionar" onclick="this.disabled=true;this.value='Enviando, Aguarde...';this.form.submit();"
+                                   style="text-align: center;font-size: 16px; margin-top: 10px;"/>
                         </form>
                         
                     </div>
