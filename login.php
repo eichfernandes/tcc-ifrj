@@ -44,7 +44,8 @@ if (isset($_SESSION['usuario'])){
                     </div>
                     
                     <!-- BOTÃO ENVIAR -->
-                    <button style="font-size: 18px;" class="but" type="submit">Entrar</button>
+                    <button style="font-size: 18px;" class="but" type="submit"
+                            onclick="this.disabled=true;this.value='Enviando, Aguarde...';this.form.submit();">Entrar</button>
                     
                 </form>
             </div>

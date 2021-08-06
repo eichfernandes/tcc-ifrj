@@ -37,6 +37,7 @@ $result = mysqli_query($mysqli, $query);
 $_SESSION['usuario']=$usuario;
 $_SESSION['nome']=$nome;
 $_SESSION['sobrenome']=$sobrenome;
+$_SESSION['adm']=0;
 
 header("Location: index.php");
 exit();

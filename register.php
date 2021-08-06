@@ -46,7 +46,8 @@ if (isset($_SESSION['usuario'])){
                            type="password" name="senha2" class="reg_pass" placeholder="Confirmar Senha" size="40">
 
                     <!-- BOTÃO ENVIAR -->
-                    <div style="margin-top: 18px;"><button style="font-size: 18px;" class="but" type="submit">Registrar</button></div>
+                    <div style="margin-top: 18px;"><button style="font-size: 18px;" class="but" type="submit"
+                        onclick="this.disabled=true;this.form.submit();">Registrar</button></div>
                 </form>
             </div>
             <?php if(isset($_SESSION['vazio'])){ ?>
