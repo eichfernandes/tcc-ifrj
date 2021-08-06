@@ -8,6 +8,7 @@
             exit();
         };
     };
+    if (empty($_GET['id'])){header('Location: index.php'); exit();};
 ?>
 <!DOCTYPE html>
 <html>
@@ -27,54 +28,99 @@
         <div style="display: flex; justify-content: space-between; align-items: center; height: 100%;">
             <div class="content" style="width: 40%;"><!-- Define o que estará no conteúdo central -->
                 <div class="block"><!-- Cada div block é um bloco de conteúdo -->
-                    <form method="post">
-                        <input class="searchbar" size="25" name="pesquisa" placeholder="Pesquisar"
-                               value="<?php if(!empty($_POST['pesquisa'])){echo $_POST['pesquisa'];}; ?>">
-                        <select name="ordem" style="float: right; padding: 7px 9px;" class="order" onchange="this.form.submit()">
-                            <option <?php if(empty($_POST['ordem'])||$_POST['ordem']=='id_diretor'){echo "selected";}?> 
-                                value="id_diretor">ID ↓</option>
-                            <option <?php if(!empty($_POST['ordem'])&&$_POST['ordem']=='id_diretor desc'){echo "selected";}?>
-                                value="id_diretor desc">ID ↑</option>
-                            <option <?php if(!empty($_POST['ordem'])&&$_POST['ordem']=='nome'){echo "selected";}?>
-                                value="nome">Nome ↓</option>
-                            <option <?php if(!empty($_POST['ordem'])&&$_POST['ordem']=='nome desc'){echo "selected";}?>
-                                value="nome desc">Nome ↑</option>
-                        </select>
-                    </form>
-                    <div style="padding: 0px 12px 0px; font-size: 20px;">
-                        Diretores
-                        <div style="text-align: right; float: right;">IDs</div>
-                    </div>
+                    
+                    <!-- PUXANDO DADOS -->
                     <?php include "conexao.php";
-                        if (!empty($_POST['pesquisa'])){
-                            $pesquisa=' where nome like "%'.$_POST['pesquisa'].'%"'
-                                    . ' or id_diretor like "%'.$_POST['pesquisa'].'%"';
-                        }else{$pesquisa='';};
-                        
-                        if (!empty($_POST['ordem'])){
-                            $ordem=' order by '.$_POST['ordem'];
-                        }else{$ordem=' order by id_diretor';};
-                        
+                        $idir=$_GET['id'];
+                        $query = "select nome,foto from diretores where id_diretor='".$idir."'";
+                        $result = mysqli_query($mysqli, $query);
+                        $row = mysqli_fetch_assoc($result);
+                        $foto = $row['foto'];
+                        $nome = $row['nome'];
+                    ?>
+                    
+                    <!-- INFORMAÇÕES DO DIRETOR -->
+                    <?php if(!empty($foto)){ ?>
+                    <img style="padding: 0px 0px" src="<?php echo $foto; ?>" width="100%"><br><br>
+                    <?php }; ?>
+                    <div style="padding: 0px 11px; font-size: 14px;">
+                        Diretor:<div style="text-align: right; float: right;">ID:</div>
+                    </div>
+                    <div style="padding: 0px 11px 0px; font-size: 25px;">
+                        <?php echo $nome; ?>
+                        <div style="text-align: right; float: right;">
+                            [ <?php echo $idir; ?> ]
+                        </div>
+                    </div>
 
-                        
-                        $query = "select nome, id_diretor from diretores".$pesquisa.$ordem;
+                    
+                    
+                    
+                    <!-- LISTA DE FILMES -->
+                    <?php    
+                        $query = "select filmes.titulo as 'titulo', filmes.ano as 'ano', filmes.id_filme as 'id' "
+                                . "from filmes, direcao where filmes.id_filme=direcao.id_filme and direcao.id_diretor=".$idir." "
+                                . "group by filmes.id_filme";
                         
                         $result = mysqli_query($mysqli, $query);
+                        $valid = mysqli_num_rows($result);
                         
+                        /* VALIDANDO FILMES */
+                        if($valid==0){echo '<div style="margin: 20px 0px 0px;text-align:center;font-size: 23px;">---------------------------------<br>'
+                            . 'Nenhum Filme Encontrado<br>---------------------------------</div>';}
+                        else{ ?>
+                            <div style="padding: 0px 11px 0px; font-size: 14px;"><br>
+                                Filmes:<br>
+                            </div>
+                            <div style="padding: 0px 11px 0px; font-size: 18px;">
+                                Título - ( Ano )<div style="text-align: right; float: right;"> Nota - [ ID ]</div>
+                            </div>
+                        <?php };
+                        
+                        /* LISTANDO FILMES */
                         if ($result){
                             while ($row = mysqli_fetch_assoc($result)){
-                                $nome=$row['nome'];
-                                $id=$row['id_diretor'];
+                                $titulo=$row['titulo'];
+                                $ano=$row['ano'];
+                                $id=$row['id'];
+                                
+                                
+                                $result2 = mysqli_query($mysqli, 'select avg(nota) as "nota" from notas where id_filme='.$id);
+                                $row2 = mysqli_fetch_assoc($result2);
+                                $nota=number_format($row2['nota'], 1, '.');
+                                
                                 echo '<div class="listclick">'.
-                                    $nome.'<div style="float: right;">[ '.$id.' ]</div>'
+                                    $titulo.' - ('.$ano.')<div style="float: right;">'
+                                        .$nota.' ★ - [ '.$id.' ]</div>'
                                 .'</div>';
                             };
                         };
                         mysqli_free_result($result);
                     ?>
+                    
+                    <!-- ADICIONAR FILMES -->
+                    <div  style="font-size: 20px; margin: 20px 12px; text-align: center;">
+                        <form method="post" action="adicionar_filme.php">
+                            <h2>Adicionar Filme</h2>
+                            Título: <input name="titulo" type="text" class="searchbar" maxlength="100" size="30"
+                                style="margin: 10px 0px 0px;" placeholder="Título em Inglês ou Mais Famoso"><br>
+
+                            AKA: <input name="aka" type="text" class="searchbar" maxlength="100" size="30"
+                                style="margin: 10px 0px 0px;" placeholder="Título em Português se Existir"><br>
+
+                            Lançamento: <input name="ano" type="number" class="searchbar" min="1850" max="3000" size="4"
+                                style="margin: 10px 0px 0px;" placeholder="(Ano)"><br>
+                            
+                            <input name="idir" type="hidden" value="<?php echo $idir; ?>">
+                            <input type="submit" class="but" value="Adicionar"  style="text-align: center;font-size: 16px; margin-top: 10px;"/>
+                        </form>
+                        
+                    </div>
+                    
                 </div>
             </div>
         </div>
+        
         <!-- Rodapé -->
         <?php include "footer.php" ?> <!-- Rodapé da Página -->
         

@@ -20,24 +20,24 @@ if (isset($_SESSION['usuario'])){
                     <!-- Nome de Usuário -->
                     <h2 style="margin: 14px 0px;">Usuário</h2>
                     <input style="padding: 7px 14px; font-size: 18px; border: 1px solid rgb(255, 255, 255, 0.2); border-radius: 5px; 
-                           background-color: rgb(52, 53, 58, 1); outline: none;"
+                           background-color: rgb(52, 53, 58, 1); outline: none;" maxlength="25"
                            type="text" name="usuario" class="reg_user" placeholder="Nome de Usuário para Login" size="40">
 
                     <!-- Nome -->
                     <h2 style="margin: 14px 0px;">Nome</h2>
                     <input style="margin: 0px 0px 14px 0px; padding: 7px 14px; font-size: 18px; border: 1px solid rgb(255, 255, 255, 0.2); border-radius: 5px; 
-                           background-color: rgb(52, 53, 58, 1); outline: none;"
+                           background-color: rgb(52, 53, 58, 1); outline: none;" maxlength="40"
                            type="text" name="nome" class="reg_user" placeholder="Seu Nome Real" size="40">
 
                     <!-- Sobrenome -->
                     <input style="padding: 7px 14px; font-size: 18px; border: 1px solid rgb(255, 255, 255, 0.2); border-radius: 5px; 
-                           background-color: rgb(52, 53, 58, 1); outline: none;"
+                           background-color: rgb(52, 53, 58, 1); outline: none;" maxlength="80"
                            type="text" name="sobrenome" class="reg_user" placeholder="Seu Sobrenome" size="40">
 
                     <!-- Senha -->
                     <h2 style="margin: 14px 0px;">Senha</h2>
                     <input style="margin-bottom: 14px; padding: 7px 14px; font-size: 18px; border: 1px solid rgb(255, 255, 255, 0.2); border-radius: 5px; 
-                           background-color: rgb(52, 53, 58, 1); outline: none;"
+                           background-color: rgb(52, 53, 58, 1); outline: none;" maxlength="25"
                            type="password" name="senha" class="reg_pass" placeholder="Senha para Login" size="40">
 
                     <!-- Confirmação de Senha -->

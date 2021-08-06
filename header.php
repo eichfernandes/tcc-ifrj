@@ -20,7 +20,7 @@
                 <?php }else{ ?>
                 <ul>
                     <?php if($_SESSION['adm']==1){ ?>
-                        <li><a class="link" href="admin_diretor.php">Admin</a></li> |
+                        <li><a class="link" href="admin_diretores.php">Admin</a></li> |
                     <?php }; ?>
                     <li><a class="link" href="#">Amigos</a></li> |
                     <li><a class="link" href="#"><?php echo $_SESSION['usuario']; ?></a></li>
