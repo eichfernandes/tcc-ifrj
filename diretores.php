@@ -1,13 +1,4 @@
 <?php session_start();
-    if(!isset($_SESSION['adm'])){
-        header('Location: index.php');
-        exit();
-    }else{
-        if($_SESSION['adm']!=1){
-            header('Location: index.php');
-            exit();
-        };
-    };
 ?>
 <!DOCTYPE html>
 <html>
@@ -35,14 +26,6 @@
         <div style="display: flex; justify-content: space-between; align-items: center; height: 100%;">
             <div class="content" style="width: 650px;"><!-- Define o que estará no conteúdo central -->
                 <div class="block"><!-- Cada div block é um bloco de conteúdo -->
-                    <div style="padding: 0px 12px 10px;">
-                        <h2>Adicionar Diretor</h2>
-                    </div>
-                    <form method="post" action="adicionar_diretor.php">
-                        <input class="searchbar" size="25" name="diretor" placeholder="Nome do Diretor" style="margin: 0px 12px 30px 0px">
-                        <input type="submit" class="but" value="Adicionar" onclick="this.disabled=true;this.value='Aguarde...';this.form.submit();"
-                            style="text-align: center;font-size: 16px; margin-top: 10px;"/>
-                    </form>
                     <div style="padding: 0px 12px 16px;">
                         <h2>Lista de Diretores</h2>
                     </div>
@@ -50,19 +33,14 @@
                         <input class="searchbar" size="25" name="pesquisa" placeholder="Pesquisar"
                                value="<?php if(!empty($_POST['pesquisa'])){echo $_POST['pesquisa'];}; ?>">
                         <select name="ordem" style="float: right; padding: 7px 9px;" class="order" onchange="this.form.submit()">
-                            <option <?php if(!empty($_SESSION['ordemdir'])&&$_SESSION['ordemdir']=='id_diretor'){echo "selected";}?> 
-                                value="id_diretor">ID ↓</option>
-                            <option <?php if(!empty($_SESSION['ordemdir'])&&$_SESSION['ordemdir']=='id_diretor desc'){echo "selected";}?>
-                                value="id_diretor desc">ID ↑</option>
                             <option <?php if(!empty($_SESSION['ordemdir'])&&$_SESSION['ordemdir']=='nome'){echo "selected";}?>
-                                value="nome">Nome ↓</option>
+                                value="nome">Crescente ↓</option>
                             <option <?php if(!empty($_SESSION['ordemdir'])&&$_SESSION['ordemdir']=='nome desc'){echo "selected";}?>
-                                value="nome desc">Nome ↑</option>
+                                value="nome desc">Decrescente ↑</option>
                         </select>
                     </form>
                     <div style="padding: 0px 12px 0px; font-size: 20px;">
                         Diretores
-                        <div style="text-align: right; float: right;">IDs</div>
                     </div>
                     <?php include "conexao.php";
                         if (!empty($_POST['pesquisa'])){
@@ -78,10 +56,10 @@
                             while ($row = mysqli_fetch_assoc($result)){
                                 $nome=$row['nome'];
                                 $id=$row['id_diretor'];
-                                echo '<form name="form'.$id.'" method="get" action="admin_diretor.php">'.
+                                echo '<form name="form'.$id.'" method="get" action="diretor.php">'.
                                     '<input name="id" type="hidden" value="'.$id.'">'.
                                     '<div class="listclick" onClick="document.forms.form'.$id.'.submit();">'.
-                                    $nome.'<div style="float: right;">[ '.$id.' ]</div>'.
+                                    $nome.
                                     '</div></form>';
                             };
                         };

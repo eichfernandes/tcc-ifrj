@@ -6,6 +6,7 @@ $ano = mysqli_real_escape_string($mysqli,$_POST['ano']);
 
 if(empty($titulo)||empty($ano)){
     header('Location: ' . $_SERVER['HTTP_REFERER']);
+    exit();
 };
 
 if(empty($_POST['aka'])){

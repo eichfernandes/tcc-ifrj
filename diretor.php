@@ -44,23 +44,16 @@
                     <img style="padding: 0px 0px; display: block; margin: auto; border-radius: 20px;" src="<?php echo $foto; ?>" height="300px"><br><br>
                     <?php }; ?>
                     <div style="padding: 0px 11px; font-size: 14px;">
-                        Diretor:<div style="text-align: right; float: right;">ID:</div>
+                        Diretor:
                     </div>
                     <div style="padding: 0px 11px 20px; font-size: 25px;">
                         <?php echo $nome; ?>
-                        <div style="text-align: right; float: right;">
-                            [ <?php echo $idir; ?> ]
-                        </div>
                     </div>
 
                     <form method="post" action="diretor_pesquisa.php">
                         <input class="searchbar" size="25" name="pesquisa" placeholder="Pesquisar"
                                value="<?php if(!empty($_SESSION['pesquisadirfil'])){echo $_SESSION['pesquisadirfil'];}; ?>">
                         <select name="ordem" style="float: right; padding: 7px 9px;" class="order" onchange="this.form.submit()">
-                            <option <?php if(!empty($_SESSION['ordemdirfil'])&&$_SESSION['ordemdirfil']=='filmes.id_filme'){echo "selected";}?> 
-                                value="filmes.id_filme">ID ↓</option>
-                            <option <?php if(!empty($_SESSION['ordemdirfil'])&&$_SESSION['ordemdirfil']=='filmes.id_filme desc'){echo "selected";}?>
-                                value="filmes.id_filme desc">ID ↑</option>
                             <option <?php if(!empty($_SESSION['ordemdirfil'])&&$_SESSION['ordemdirfil']=='filmes.titulo'){echo "selected";}?>
                                 value="filmes.titulo">Titulo ↓</option>
                             <option <?php if(!empty($_SESSION['ordemdirfil'])&&$_SESSION['ordemdirfil']=='filmes.titulo desc'){echo "selected";}?>
@@ -97,7 +90,7 @@
                                 Filmes:<br>
                             </div>
                             <div style="padding: 0px 11px 0px; font-size: 18px;">
-                                Título - ( Ano )<div style="text-align: right; float: right;"> Nota - [ ID ]</div>
+                                Título - ( Ano )<div style="text-align: right; float: right;"> Nota</div>
                             </div>
                         <?php };
                         
@@ -115,43 +108,12 @@
                                 
                                 echo '<div class="listclick">'.
                                     $titulo.' - ('.$ano.')<div style="float: right;">'
-                                        .$nota.' ★ - [ '.$id.' ]</div>'
+                                        .$nota.' ★</div>'
                                 .'</div>';
                             };
                         };
                         mysqli_free_result($result);
                     ?>
-                    
-                    <!-- ADICIONAR FILMES -->
-                    <div  style="font-size: 20px; margin: 20px 12px 0px;">
-                        <form method="post" action="adicionar_filme.php">
-                            <h2 style="margin: 10px 0px;">Adicionar Filme</h2>
-                            
-                            ID Diretor 2: <input name="dir2" type="number" class="searchbar" min="1" max="99999999" size="8"
-                                style="margin: 10px 0px 0px;" placeholder="(Opcional)"><br>
-                            
-                            ID Diretor 3: <input name="dir3" type="number" class="searchbar" min="1" max="99999999" size="8"
-                                style="margin: 10px 0px 0px;" placeholder="(Opcional)"><br>
-                            
-                            ID Diretor 4: <input name="dir4" type="number" class="searchbar" min="1" max="99999999" size="8"
-                                style="margin: 10px 0px 0px;" placeholder="(Opcional)"><br>
-                            
-                            Título: <input name="titulo" type="text" class="searchbar" maxlength="100" size="30"
-                                style="margin: 10px 0px 0px;" placeholder="Título em Inglês ou Mais Famoso"><br>
-
-                            AKA: <input name="aka" type="text" class="searchbar" maxlength="100" size="30"
-                                style="margin: 10px 0px 0px;" placeholder="Título em Português se Existir"><br>
-
-                            Lançamento: <input name="ano" type="number" class="searchbar" min="1850" max="3000" size="4"
-                                style="margin: 10px 0px 0px;" placeholder="(Ano)"><br>
-                            
-                            <input name="idir" type="hidden" value="<?php echo $idir; ?>">
-                            <input type="submit" class="but" value="Adicionar" onclick="this.disabled=true;this.value='Enviando, Aguarde...';this.form.submit();"
-                                   style="text-align: center;font-size: 16px; margin-top: 10px;"/>
-                        </form>
-                        
-                    </div>
-                    
                 </div>
             </div>
         </div>
