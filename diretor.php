@@ -1,14 +1,4 @@
 <?php session_start();
-    if(!isset($_SESSION['adm'])){
-        header('Location: index.php');
-        exit();
-    }else{
-        if($_SESSION['adm']!=1){
-            header('Location: index.php');
-            exit();
-        };
-    };
-    if (empty($_GET['id'])){header('Location: index.php'); exit();};
 ?>
 <!DOCTYPE html>
 <html>
