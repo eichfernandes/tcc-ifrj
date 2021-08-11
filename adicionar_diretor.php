@@ -2,7 +2,7 @@
 $diretor = mysqli_real_escape_string($mysqli,$_POST['diretor']);
 
 if(empty($diretor)){
-    header('Location: ' . $_SERVER['HTTP_REFERER']);
+    header('Location: admin_diretores.php');
     exit();
 };
 

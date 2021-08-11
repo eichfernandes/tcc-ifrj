@@ -1,4 +1,5 @@
 <?php session_start();
+if (empty($_GET['id'])){header('Location: diretores.php');}
 ?>
 <!DOCTYPE html>
 <html>
@@ -44,10 +45,10 @@
                         <input class="searchbar" size="25" name="pesquisa" placeholder="Pesquisar"
                                value="<?php if(!empty($_SESSION['pesquisadirfil'])){echo $_SESSION['pesquisadirfil'];}; ?>">
                         <select name="ordem" style="float: right; padding: 7px 9px;" class="order" onchange="this.form.submit()">
-                            <option <?php if(!empty($_SESSION['ordemdirfil'])&&$_SESSION['ordemdirfil']=='filmes.titulo'){echo "selected";}?>
-                                value="filmes.titulo">Titulo ↓</option>
-                            <option <?php if(!empty($_SESSION['ordemdirfil'])&&$_SESSION['ordemdirfil']=='filmes.titulo desc'){echo "selected";}?>
-                                value="filmes.titulo desc">Titulo ↑</option>
+                            <option <?php if(!empty($_SESSION['ordemdirfil'])&&$_SESSION['ordemdirfil']=='filmes.aka'){echo "selected";}?>
+                                value="filmes.aka">Titulo ↓</option>
+                            <option <?php if(!empty($_SESSION['ordemdirfil'])&&$_SESSION['ordemdirfil']=='filmes.aka desc'){echo "selected";}?>
+                                value="filmes.aka desc">Titulo ↑</option>
                         </select>
                     </form>
                     
@@ -65,7 +66,7 @@
                             $order = " order by " . $_SESSION['ordemdirfil'];
                         }else{$order = " order by filmes.id_filme"; };
                     
-                        $query = "select filmes.titulo as 'titulo', filmes.ano as 'ano', filmes.id_filme as 'id' "
+                        $query = "select filmes.titulo as 'titulo', filmes.aka as 'aka', filmes.ano as 'ano', filmes.id_filme as 'id' "
                                 . "from filmes, direcao where filmes.id_filme=direcao.id_filme and direcao.id_diretor=".$idir." ".$pesquisa
                                 . "group by filmes.id_filme" . $order;
                         
@@ -90,6 +91,7 @@
                                 $titulo=$row['titulo'];
                                 $ano=$row['ano'];
                                 $id=$row['id'];
+                                $aka=$row['aka'];
                                 
                                 
                                 $result2 = mysqli_query($mysqli, 'select avg(nota) as "nota" from notas where id_filme='.$id);
@@ -97,7 +99,7 @@
                                 $nota=number_format($row2['nota'], 1, '.');
                                 
                                 echo '<div class="listclick">'.
-                                    $titulo.' - ('.$ano.')<div style="float: right;">'
+                                    $aka.' - ('.$ano.')<div style="float: right;">'
                                         .$nota.' ★</div>'
                                 .'</div>';
                             };

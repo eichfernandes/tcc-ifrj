@@ -129,6 +129,22 @@ a.link:hover{
     background-color: rgb(47, 48, 55, 0.6);
     cursor: pointer;
 }
+a.tag{
+    text-decoration: none;
+    padding: 1px 3px;
+    border: none;
+    border-radius: 5px;
+    background-color: rgb(22, 24, 29);
+}
+a.tag:hover{
+    background-color: rgb(22, 24, 29, 0.7);
+}
+.blockin{
+    border-radius: 6px;
+    background-color: #2f3037;
+    padding: 10px 20px;
+    width: 100%;
+}
 
 
 /*///// Login /////*/
