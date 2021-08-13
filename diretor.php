@@ -1,5 +1,14 @@
-<?php session_start();
-if (empty($_GET['id'])){header('Location: diretores.php');}
+<?php session_start(); include "conexao.php";
+if (empty($_GET['id'])){header('Location: diretores.php');};
+
+$id = $_GET['id'];
+$query = "select * from diretores where id_diretor=$id";
+$result = mysqli_query($mysqli, $query);
+$valid = mysqli_num_rows($result);
+
+if($valid!=1){header('Location: index.php');
+    exit();}
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -10,10 +19,16 @@ if (empty($_GET['id'])){header('Location: diretores.php');}
         <link rel="shortcut icon" href="icone.png" type="image/x-png">
     </head>
     <body>
+        
+        <?php if (isset($_SESSION['adm'])&&$_SESSION['adm']==1){
+            include "admin_diretor.php";
+            exit();
+        }; ?>
+        
         <div class="semibody"><!-- Esta div está relacionada a tela e ajuda a ajustar as restantes -->
         
         <!-- Cabeçalho -->
-        <?php include "header.php" ?> <!-- Cabeçalho da Página -->
+        <?php include "header.php"; ?> <!-- Cabeçalho da Página -->
         
         <!-- Conteúdo -->
         <div style="display: flex; justify-content: space-between; align-items: center; height: 100%;">
@@ -21,7 +36,7 @@ if (empty($_GET['id'])){header('Location: diretores.php');}
                 <div class="block"><!-- Cada div block é um bloco de conteúdo -->
                     
                     <!-- PUXANDO DADOS -->
-                    <?php include "conexao.php";
+                    <?php
                         $idir=$_GET['id'];
                         $query = "select nome,foto from diretores where id_diretor='".$idir."'";
                         $result = mysqli_query($mysqli, $query);
@@ -98,10 +113,12 @@ if (empty($_GET['id'])){header('Location: diretores.php');}
                                 $row2 = mysqli_fetch_assoc($result2);
                                 $nota=number_format($row2['nota'], 1, '.');
                                 
-                                echo '<div class="listclick">'.
+                                echo '<form name="form'.$id.'" method="get" action="filme.php">'.
+                                    '<input name="id" type="hidden" value="'.$id.'">'
+                                    . '<div class="listclick" onClick="document.forms.form'.$id.'.submit();">'.
                                     $aka.' - ('.$ano.')<div style="float: right;">'
                                         .$nota.' ★</div>'
-                                .'</div>';
+                                .'</div></form>';
                             };
                         };
                         mysqli_free_result($result);

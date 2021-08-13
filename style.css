@@ -116,6 +116,18 @@ a.link:hover{
 .searchbar:hover{
     background-color: rgb(47, 48, 55, 0.6);
 }
+.searchbarblack{
+    border-radius: 6px;
+    background-color: #16181d;
+    padding: 8px 10px;
+    margin-bottom: 15px;
+    border: none;
+    outline: none;
+    font-size: 18px;
+}
+.searchbarblack:hover{
+    background-color: rgb(22, 24, 29, 0.6);
+}
 .order{
     border-radius: 6px;
     background-color: #2f3037;
@@ -143,7 +155,19 @@ a.tag:hover{
     border-radius: 6px;
     background-color: #2f3037;
     padding: 10px 20px;
-    width: 100%;
+}
+a.remover, input.remover{
+    background-color: rgb(102, 0, 0);
+    font-weight: 500;
+    padding: 4px 5px;
+    text-align: center;
+    margin-top: 10px;
+    border-radius: 3px;
+    border: none;
+}
+a.remover:hover, input.remover:hover{
+    background-color: rgb(102, 0, 0, 0.6);
+    cursor: pointer;
 }
 
 

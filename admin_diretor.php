@@ -1,4 +1,4 @@
-<?php session_start();
+<?php
     if(!isset($_SESSION['adm'])){
         header('Location: index.php');
         exit();
@@ -27,6 +27,11 @@
         <!-- Conteúdo -->
         <div style="display: flex; justify-content: space-between; align-items: center; height: 100%;">
             <div class="content" style="width: 780px;"><!-- Define o que estará no conteúdo central -->
+                <?php if(isset($_SESSION['addir_erro'])): ?>
+                    <div class="block" style="text-align: center; padding: 20px 30px 30px 30px; background-color: #771122;">
+                        Erro de Adição<br>Algum Campo Obrigatório Faltando
+                    </div>
+                <?php endif; unset($_SESSION['addir_erro']); ?>
                 <div class="block"><!-- Cada div block é um bloco de conteúdo -->
                     
                     <!-- PUXANDO DADOS -->
@@ -113,45 +118,49 @@
                                 $row2 = mysqli_fetch_assoc($result2);
                                 $nota=number_format($row2['nota'], 1, '.');
                                 
-                                echo '<div class="listclick">'.
+                                echo '<form name="form'.$id.'" method="get" action="filme.php">'.
+                                    '<input name="id" type="hidden" value="'.$id.'">'
+                                    . '<div class="listclick" onClick="document.forms.form'.$id.'.submit();">'.
                                     $aka.' - ('.$ano.')<div style="float: right;">'
                                         .$nota.' ★ - [ '.$id.' ]</div>'
-                                .'</div>';
+                                .'</div></form>';
                             };
                         };
                         mysqli_free_result($result);
                     ?>
                     
                     <!-- ADICIONAR FILMES -->
-                    <div  style="font-size: 20px; margin: 20px 12px 0px;">
+                    <div  style="font-size: 20px; width: 370px; padding-bottom: 35px; margin: 30px auto 0px;" class="blockin">
                         <form method="post" action="adicionar_filme.php">
                             <h2 style="margin: 10px 0px;">Adicionar Filme</h2>
                             
-                            ID Diretor 2: <input name="dir2" type="number" class="searchbar" min="1" max="99999999" size="8"
-                                style="margin: 10px 0px 0px;" placeholder="(Opcional)"><br>
-                            
-                            ID Diretor 3: <input name="dir3" type="number" class="searchbar" min="1" max="99999999" size="8"
-                                style="margin: 10px 0px 0px;" placeholder="(Opcional)"><br>
-                            
-                            ID Diretor 4: <input name="dir4" type="number" class="searchbar" min="1" max="99999999" size="8"
-                                style="margin: 10px 0px 0px;" placeholder="(Opcional)"><br>
-                            
-                            Título: <input name="titulo" type="text" class="searchbar" maxlength="100" size="30"
+                            Título: <input name="titulo" type="text" class="searchbarblack" maxlength="100" size="30"
                                 style="margin: 10px 0px 0px;" placeholder="Título em Inglês ou Mais Famoso"><br>
 
-                            AKA: <input name="aka" type="text" class="searchbar" maxlength="100" size="30"
+                            AKA: <input name="aka" type="text" class="searchbarblack" maxlength="100" size="30"
                                 style="margin: 10px 0px 0px;" placeholder="Título em Português se Existir"><br>
 
-                            Lançamento: <input name="ano" type="number" class="searchbar" min="1850" max="3000" size="4"
+                            Lançamento: <input name="ano" type="number" class="searchbarblack" min="1850" max="3000" size="4"
                                 style="margin: 10px 0px 0px;" placeholder="(Ano)"><br>
                             
                             <input name="idir" type="hidden" value="<?php echo $idir; ?>">
                             <input type="submit" class="but" value="Adicionar" onclick="this.disabled=true;this.value='Enviando, Aguarde...';this.form.submit();"
                                    style="text-align: center;font-size: 16px; margin-top: 10px;"/>
                         </form>
-                        
                     </div>
-                    
+                    <div style="text-align: center; margin-top: 10px;">
+                        <form id="remove" method="post" action="remove_diretor.php">
+                            <input name="idir" type="hidden" value="<?php echo $idir; ?>">
+                            <input type="button" class="remover" value="Deletar Diretor" onclick="this.disabled=true; remove();"
+                                style="text-align: center; font-size: 16px; margin-top: 10px;"/>
+                        </form>
+                    </div>
+                    <script>
+                        function remove() {
+                          if (confirm("Tem Certeza que Deseja Deletar este Diretor?")) {
+                            document.getElementById("remove").submit();}else{location.reload();};
+                        }
+                    </script>
                 </div>
             </div>
         </div>

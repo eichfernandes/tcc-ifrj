@@ -9,11 +9,7 @@
         <header>
             <ul>
                 <li><a class="link" href="index.php">Início</a></li> |
-                <?php if(!isset($_SESSION['usuario'])){ ?>
-                    <li><a class="link" href="diretores.php">Diretores</a></li>
-                <?php }else{if($_SESSION['adm']==1){ ?>
-                    <li><a class="link" href="admin_diretores.php">Diretores</a></li>
-                <?php };}; ?>
+                <li><a class="link" href="diretores.php">Diretores</a></li>
             </ul>
             <div class="title">Me Indica - Avaliação de Filmes</div>
             <div>

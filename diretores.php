@@ -9,6 +9,12 @@
         <link rel="shortcut icon" href="icone.png" type="image/x-png">
     </head>
     <body>
+        
+        <?php if (isset($_SESSION['adm'])&&$_SESSION['adm']==1){
+            include "admin_diretores.php";
+            exit();
+        }; ?>
+        
         <div class="semibody"><!-- Esta div está relacionada a tela e ajuda a ajustar as restantes -->
         
         <!-- Cabeçalho -->

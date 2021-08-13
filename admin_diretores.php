@@ -1,4 +1,4 @@
-<?php session_start();
+<?php
     if(!isset($_SESSION['adm'])){
         header('Location: index.php');
         exit();
@@ -34,6 +34,11 @@
         <!-- Conteúdo -->
         <div style="display: flex; justify-content: space-between; align-items: center; height: 100%;">
             <div class="content" style="width: 650px;"><!-- Define o que estará no conteúdo central -->
+                <?php if(isset($_SESSION['addir_erro'])): ?>
+                    <div class="block" style="text-align: center; padding: 20px 30px 30px 30px; background-color: #771122;">
+                        Erro de Adição<br>Digite um Nome para Adicionar
+                    </div>
+                <?php endif; unset($_SESSION['addir_erro']); ?>
                 <div class="block"><!-- Cada div block é um bloco de conteúdo -->
                     <div style="padding: 0px 12px 10px;">
                         <h2>Adicionar Diretor</h2>
@@ -78,7 +83,7 @@
                             while ($row = mysqli_fetch_assoc($result)){
                                 $nome=$row['nome'];
                                 $id=$row['id_diretor'];
-                                echo '<form name="form'.$id.'" method="get" action="admin_diretor.php">'.
+                                echo '<form name="form'.$id.'" method="get" action="diretor.php">'.
                                     '<input name="id" type="hidden" value="'.$id.'">'.
                                     '<div class="listclick" onClick="document.forms.form'.$id.'.submit();">'.
                                     $nome.'<div style="float: right;">[ '.$id.' ]</div>'.
