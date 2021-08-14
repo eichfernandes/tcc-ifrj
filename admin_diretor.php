@@ -35,7 +35,7 @@
                 <div class="block"><!-- Cada div block é um bloco de conteúdo -->
                     
                     <!-- PUXANDO DADOS -->
-                    <?php include "conexao.php";
+                    <?php
                         $idir=$_GET['id'];
                         $query = "select nome,foto from diretores where id_diretor='".$idir."'";
                         $result = mysqli_query($mysqli, $query);
@@ -144,12 +144,12 @@
                                 style="margin: 10px 0px 0px;" placeholder="(Ano)"><br>
                             
                             <input name="idir" type="hidden" value="<?php echo $idir; ?>">
-                            <input type="submit" class="but" value="Adicionar" onclick="this.disabled=true;this.value='Enviando, Aguarde...';this.form.submit();"
+                            <input type="submit" class="but" value="Adicionar" onclick="this.disabled=true;this.value='Aguarde...';this.form.submit();"
                                    style="text-align: center;font-size: 16px; margin-top: 10px;"/>
                         </form>
                     </div>
                     <div style="text-align: center; margin-top: 10px;">
-                        <form id="remove" method="post" action="remove_diretor.php">
+                        <form id="remove" method="post" action="remover_diretor.php">
                             <input name="idir" type="hidden" value="<?php echo $idir; ?>">
                             <input type="button" class="remover" value="Deletar Diretor" onclick="this.disabled=true; remove();"
                                 style="text-align: center; font-size: 16px; margin-top: 10px;"/>

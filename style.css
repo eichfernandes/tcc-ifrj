@@ -51,6 +51,17 @@ a.link:hover{
 .but:hover{
     background-color: rgb(51, 153, 102, 0.8); cursor: pointer;
 }
+.butred{
+    border: none;
+    border-radius: 50px;
+    padding: 9px 25px;
+    background-color: #771122;
+    text-decoration: none;
+    
+}
+.butred:hover{
+    background-color: rgb(119, 17, 34, 0.8); cursor: pointer;
+}
 .title{
     font-size: 30px;
     font-weight: 400;

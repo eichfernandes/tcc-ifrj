@@ -5,14 +5,18 @@
         <group>
             <file>file:/C:/xampp/htdocs/tcc-ifrj/admin_diretor.php</file>
             <file>file:/C:/xampp/htdocs/tcc-ifrj/adicionar_filme.php</file>
+            <file>file:/C:/xampp/htdocs/tcc-ifrj/adicionar_tag.php</file>
             <file>file:/C:/xampp/htdocs/tcc-ifrj/filme.php</file>
             <file>file:/C:/xampp/htdocs/tcc-ifrj/diretor.php</file>
+            <file>file:/C:/xampp/htdocs/tcc-ifrj/nota.php</file>
+            <file>file:/C:/xampp/htdocs/tcc-ifrj/remover_diretor.php</file>
             <file>file:/C:/xampp/htdocs/tcc-ifrj/admin_diretores.php</file>
             <file>file:/C:/xampp/htdocs/tcc-ifrj/header.php</file>
             <file>file:/C:/xampp/htdocs/tcc-ifrj/footer.php</file>
             <file>file:/C:/xampp/htdocs/tcc-ifrj/login_submit.php</file>
             <file>file:/C:/xampp/htdocs/tcc-ifrj/diretor_pesquisa.php</file>
-            <file>file:/C:/xampp/htdocs/tcc-ifrj/remove_diretor.php</file>
+            <file>file:/C:/xampp/htdocs/tcc-ifrj/stars.php</file>
+            <file>file:/C:/xampp/htdocs/tcc-ifrj/remover_tag.php</file>
             <file>file:/C:/xampp/htdocs/tcc-ifrj/adicionar_diretor.php</file>
             <file>file:/C:/xampp/htdocs/tcc-ifrj/index.php</file>
             <file>file:/C:/xampp/htdocs/tcc-ifrj/style.css</file>

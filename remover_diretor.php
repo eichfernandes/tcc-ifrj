@@ -15,6 +15,8 @@ if ($result){
         echo $idfil;
         $query2 = "delete from direcao where id_filme=$idfil";
         $result2 = mysqli_query($mysqli, $query2);
+        $query2 = "delete from classificacoes where id_filme=$idfil";
+        $result2 = mysqli_query($mysqli, $query2);
         $query2 = "delete from filmes where id_filme=$idfil";
         $result2 = mysqli_query($mysqli, $query2);
     };

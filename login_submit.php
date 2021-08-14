@@ -23,7 +23,9 @@
         $_SESSION['nome']=$row['nome'];
         $_SESSION['sobrenome']=$row['sobrenome'];
         $_SESSION['adm']=$row['adm'];
+        $_SESSION['id_usuario']=$row['id_usuario'];
         header('Location: index.php');
+        
     }
     else{
         $_SESSION['login_error']=true;
