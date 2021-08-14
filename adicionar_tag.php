@@ -15,6 +15,7 @@ if (!empty($_POST['tag'])){
         $id = $row['id_tag'];
         $query = "insert into classificacoes (id_tag,id_filme) values ($id,$idfil)";
         $result = mysqli_query($mysqli, $query);
+        ?><script>history.go(-1)</script><?php exit();
     }else{$_SESSION['adtag_erro']=true;};
 };
 
@@ -28,6 +29,7 @@ if (!empty($_POST['diretor'])){
         $id = $row['id_diretor'];
         $query = "insert into direcao (id_diretor,id_filme) values ($id,$idfil)";
         $result = mysqli_query($mysqli, $query);
+        ?><script>history.go(-1)</script><?php exit();
     }else{$_SESSION['addir_erro']=true;};
 };
 

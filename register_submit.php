@@ -34,10 +34,15 @@ $senha= mysqli_real_escape_string($mysqli, $_POST['senha']);
 $query = "insert into usuarios (usuario, nome, sobrenome, senha) values ('{$usuario}','{$nome}','{$sobrenome}',md5('{$senha}'))";
 $result = mysqli_query($mysqli, $query);
 
+$query = "select * from usuarios where usuario='$usuario'";
+$result = mysqli_query($mysqli, $query);
+$row = mysqli_fetch_assoc($result);
+
 $_SESSION['usuario']=$usuario;
 $_SESSION['nome']=$nome;
 $_SESSION['sobrenome']=$sobrenome;
 $_SESSION['adm']=0;
+$_SESSION['id_usuario']=$row['id_usuario'];
 
 header("Location: index.php");
 exit();

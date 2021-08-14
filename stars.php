@@ -1,20 +1,20 @@
 <?php
-    $id;
     $iduser = $_SESSION['id_usuario'];
     
     $query = "select * from notas where id_filme=$id and id_usuario=$iduser";
     $result = mysqli_query($mysqli, $query);
     $valid = mysqli_num_rows($result);
     $row = mysqli_fetch_assoc($result);
+    $mynota = 0;
     if($valid==1){
-        $nota = $row['nota'];
+        $mynota = $row['nota'];
     };
 ?>
 <style>
     .star text{
         color: rgb(255, 255, 255, 0.2); font-size: 28px; display: inline-block;
     }
-    <?php $x=0; while($x<$nota){$x=$x+1; ?>#s<?php echo $x; ?>{color: rgb(255, 255, 255, 1); font-size: 28px; display: inline-block;} <?php }; ?>
+    <?php $x=0; while($x<$mynota){$x=$x+1; ?>#s<?php echo $x; ?>{color: rgb(255, 255, 255, 1); font-size: 28px; display: inline-block;} <?php }; ?>
     #star1:hover #s1{color: rgb(51, 153, 102, 1); cursor: pointer;}
     #star2:hover #s2{color: rgb(51, 153, 102, 1); cursor: pointer;}
     #star3:hover #s3{color: rgb(51, 153, 102, 1); cursor: pointer;}
