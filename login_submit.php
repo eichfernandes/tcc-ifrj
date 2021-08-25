@@ -10,7 +10,7 @@
     $usuario = mysqli_real_escape_string($mysqli, $_POST['usuario']);
     $senha = mysqli_real_escape_string($mysqli, $_POST['senha']);
     
-    $query = "select id_usuario, nome, sobrenome, adm from usuarios where usuario = '{$usuario}' and senha = md5('{$senha}')";
+    $query = "select * from usuarios where usuario = '{$usuario}' and senha = md5('{$senha}')";
     
     $result = mysqli_query($mysqli, $query);
     
@@ -18,7 +18,7 @@
     $row = mysqli_fetch_assoc($result);
     
     
-    if ($valid==1){
+    if ($valid==1&&$usuario==$row['usuario']){
         $_SESSION['usuario']=$usuario;
         $_SESSION['nome']=$row['nome'];
         $_SESSION['sobrenome']=$row['sobrenome'];

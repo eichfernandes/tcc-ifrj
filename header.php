@@ -21,7 +21,8 @@
                 <?php }else{ ?>
                 <ul>
                     <li><a class="link" href="#">Amigos</a></li> |
-                    <li><a class="link" href="#"><?php echo $_SESSION['usuario']; ?></a></li>
+                    <li><a class="link" href="usuario.php?u=<?php echo $_SESSION['usuario'];
+                        ?>"><?php echo $_SESSION['usuario']; ?></a></li>
                     <li><a class="but" href="logout.php">Sair</a></li>
                 </ul>
                 <?php }; ?>

@@ -8,13 +8,21 @@ $valid = mysqli_num_rows($result);
 
 if($valid!=1){header('Location: index.php');
     exit();}
+    
+// PUXANDO DADOS //
+$idir=$_GET['id'];
+$query = "select nome,foto from diretores where id_diretor='".$idir."'";
+$result = mysqli_query($mysqli, $query);
+$row = mysqli_fetch_assoc($result);
+$foto = $row['foto'];
+$nome = $row['nome'];
 
 ?>
 <!DOCTYPE html>
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>TCC - Avaliação de Filmes</title>
+        <title>Me Indica - <?php echo $nome; ?></title>
         <link href="style.css" rel="stylesheet">
         <link rel="shortcut icon" href="icone.png" type="image/x-png">
     </head>
@@ -24,6 +32,8 @@ if($valid!=1){header('Location: index.php');
             include "admin_diretor.php";
             exit();
         }; ?>
+        
+        
         
         <div class="semibody"><!-- Esta div está relacionada a tela e ajuda a ajustar as restantes -->
         
@@ -35,15 +45,7 @@ if($valid!=1){header('Location: index.php');
             <div class="content" style="width: 780px;"><!-- Define o que estará no conteúdo central -->
                 <div class="block"><!-- Cada div block é um bloco de conteúdo -->
                     
-                    <!-- PUXANDO DADOS -->
-                    <?php
-                        $idir=$_GET['id'];
-                        $query = "select nome,foto from diretores where id_diretor='".$idir."'";
-                        $result = mysqli_query($mysqli, $query);
-                        $row = mysqli_fetch_assoc($result);
-                        $foto = $row['foto'];
-                        $nome = $row['nome'];
-                    ?>
+                    
                     
                     <!-- INFORMAÇÕES DO DIRETOR -->
                     <?php if(!empty($foto)){ ?>
@@ -64,6 +66,10 @@ if($valid!=1){header('Location: index.php');
                                 value="filmes.aka">Titulo ↓</option>
                             <option <?php if(!empty($_SESSION['ordemdirfil'])&&$_SESSION['ordemdirfil']=='filmes.aka desc'){echo "selected";}?>
                                 value="filmes.aka desc">Titulo ↑</option>
+                            <option <?php if(!empty($_SESSION['ordemdirfil'])&&$_SESSION['ordemdirfil']=='filmes.nota_media, filmes.aka'){echo "selected";}?>
+                                value="filmes.nota_media, filmes.aka">Nota ↓</option>
+                            <option <?php if(!empty($_SESSION['ordemdirfil'])&&$_SESSION['ordemdirfil']=='filmes.nota_media desc, filmes.aka'){echo "selected";}?>
+                                value="filmes.nota_media desc, filmes.aka">Nota ↑</option>
                         </select>
                     </form>
                     
@@ -81,7 +87,7 @@ if($valid!=1){header('Location: index.php');
                             $order = " order by " . $_SESSION['ordemdirfil'];
                         }else{$order = " order by filmes.id_filme"; };
                     
-                        $query = "select filmes.titulo as 'titulo', filmes.aka as 'aka', filmes.ano as 'ano', filmes.id_filme as 'id' "
+                        $query = "select filmes.titulo as 'titulo', filmes.aka as 'aka', filmes.ano as 'ano', filmes.id_filme as 'id', filmes.nota_media as 'nota' "
                                 . "from filmes, direcao where filmes.id_filme=direcao.id_filme and direcao.id_diretor=".$idir." ".$pesquisa
                                 . "group by filmes.id_filme" . $order;
                         
@@ -107,11 +113,7 @@ if($valid!=1){header('Location: index.php');
                                 $ano=$row['ano'];
                                 $id=$row['id'];
                                 $aka=$row['aka'];
-                                
-                                
-                                $result2 = mysqli_query($mysqli, 'select avg(nota) as "nota" from notas where id_filme='.$id);
-                                $row2 = mysqli_fetch_assoc($result2);
-                                $nota=number_format($row2['nota'], 1, '.');
+                                $nota=number_format($row['nota'], 1, '.');
                                 
                                 echo '<form name="form'.$id.'" method="get" action="filme.php">'.
                                     '<input name="id" type="hidden" value="'.$id.'">'

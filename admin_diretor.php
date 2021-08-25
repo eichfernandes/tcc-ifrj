@@ -70,6 +70,10 @@
                                 value="filmes.aka">Titulo ↓</option>
                             <option <?php if(!empty($_SESSION['ordemdirfil'])&&$_SESSION['ordemdirfil']=='filmes.aka desc'){echo "selected";}?>
                                 value="filmes.aka desc">Titulo ↑</option>
+                            <option <?php if(!empty($_SESSION['ordemdirfil'])&&$_SESSION['ordemdirfil']=='filmes.nota_media, filmes.aka'){echo "selected";}?>
+                                value="filmes.nota_media, filmes.aka">Nota ↓</option>
+                            <option <?php if(!empty($_SESSION['ordemdirfil'])&&$_SESSION['ordemdirfil']=='filmes.nota_media desc, filmes.aka'){echo "selected";}?>
+                                value="filmes.nota_media desc, filmes.aka">Nota ↑</option>
                         </select>
                     </form>
                     
@@ -87,7 +91,7 @@
                             $order = " order by " . $_SESSION['ordemdirfil'];
                         }else{$order = " order by filmes.id_filme"; };
                     
-                        $query = "select filmes.titulo as 'titulo', filmes.aka as 'aka', filmes.ano as 'ano', filmes.id_filme as 'id' "
+                        $query = "select filmes.titulo as 'titulo', filmes.aka as 'aka', filmes.ano as 'ano', filmes.id_filme as 'id', filmes.nota_media as 'nota' "
                                 . "from filmes, direcao where filmes.id_filme=direcao.id_filme and direcao.id_diretor=".$idir." ".$pesquisa
                                 . "group by filmes.id_filme" . $order;
                         
@@ -113,10 +117,7 @@
                                 $ano=$row['ano'];
                                 $id=$row['id'];
                                 $aka=$row['aka'];
-                                
-                                $result2 = mysqli_query($mysqli, 'select avg(nota) as "nota" from notas where id_filme='.$id);
-                                $row2 = mysqli_fetch_assoc($result2);
-                                $nota=number_format($row2['nota'], 1, '.');
+                                $nota=number_format($row['nota'], 1, '.');
                                 
                                 echo '<form name="form'.$id.'" method="get" action="filme.php">'.
                                     '<input name="id" type="hidden" value="'.$id.'">'

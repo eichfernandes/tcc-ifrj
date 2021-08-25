@@ -17,12 +17,17 @@ empty($_POST['sobrenome'])||empty($_POST['senha'])||empty($_POST['senha2']))/* V
     
     if ($valid==1){
         $_SESSION['repetido']=true;
-        header("Location: register.php");
+        ?><script>history.go(-1)</script><?php
+        exit();
+    };
+    if (strpos($usuario, ' ')){
+        $_SESSION['space']=true;
+        ?><script>history.go(-1)</script><?php
         exit();
     };
     if ($_POST['senha']!=$_POST['senha2']){
         $_SESSION['erroSenha']=true;
-        header("Location: register.php");
+        ?><script>history.go(-1)</script><?php
         exit();
     };
 };

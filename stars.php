@@ -1,4 +1,8 @@
 <?php
+    if(empty($id)){
+        header('Location: index.php'); exit();
+    };
+    
     $iduser = $_SESSION['id_usuario'];
     
     $query = "select * from notas where id_filme=$id and id_usuario=$iduser";
@@ -6,7 +10,7 @@
     $valid = mysqli_num_rows($result);
     $row = mysqli_fetch_assoc($result);
     $mynota = 0;
-    if($valid==1){
+    if($valid == 1){
         $mynota = $row['nota'];
     };
 ?>

@@ -59,7 +59,7 @@ mysqli_free_result($result);
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>TCC - Avaliação de Filmes</title>
+        <title>Me Indica - <?php echo $titulo; ?></title>
         <link href="style.css" rel="stylesheet">
         <link rel="shortcut icon" href="icone.png" type="image/x-png">
     </head>
@@ -67,7 +67,7 @@ mysqli_free_result($result);
         <div class="semibody"><!-- Esta div está relacionada a tela e ajuda a ajustar as restantes -->
         
         <!-- Cabeçalho -->
-        <?php include "header.php" ?> <!-- Cabeçalho da Página -->
+        <?php include "header.php" ?><!-- Cabeçalho da Página -->
         
         <!-- Conteúdo -->
         <div style="display: flex; justify-content: space-between; align-items: center; height: 100%;">

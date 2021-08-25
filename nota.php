@@ -26,4 +26,11 @@ if($valid==1){
     $query = "insert into notas (nota,id_usuario,id_filme) values ($nota,$iduser,$idfil)";
     $result = mysqli_query($mysqli, $query);
 };
+
+$result = mysqli_query($mysqli, 'select avg(nota) as "notmed" from notas where id_filme='.$idfil);
+$row = mysqli_fetch_assoc($result);
+$notmed = $row['notmed'];
+
+$query = "update filmes set nota_media=$notmed where id_filme=$idfil";
+$result = mysqli_query($mysqli, $query);
 ?><script>history.go(-1)</script>

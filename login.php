@@ -10,7 +10,7 @@ if (isset($_SESSION['usuario'])){
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>TCC - Login</title>
+        <title>Me Indica - Login</title>
         <link href="style.css" rel="stylesheet">
         <link rel="shortcut icon" href="icone.png" type="image/x-png">
     </head>

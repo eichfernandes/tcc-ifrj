@@ -4,7 +4,7 @@
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>TCC - Avaliação de Filmes</title>
+        <title>Me Indica - Diretores</title>
         <link href="style.css" rel="stylesheet">
         <link rel="shortcut icon" href="icone.png" type="image/x-png">
     </head>

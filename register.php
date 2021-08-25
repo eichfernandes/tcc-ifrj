@@ -7,7 +7,7 @@ if (isset($_SESSION['usuario'])){
 <html>
     <head>
         <meta charset="UTF-8">
-        <title>TCC - Registro</title>
+        <title>Me Indica - Registro</title>
         <link href="style.css" rel="stylesheet">
         <link rel="shortcut icon" href="icone.png" type="image/x-png">
     </head>
@@ -65,6 +65,11 @@ if (isset($_SESSION['usuario'])){
                 Erro: As senhas não são iguais
             </div>
             <?php }; unset($_SESSION['erroSenha']); ?>
+            <?php if(isset($_SESSION['space'])){ ?>
+            <div class="block" style="text-align: center; padding: 20px 30px 20px 30px; background-color: #771122;">
+                Erro: Escolha um usuário sem espaços
+            </div>
+            <?php }; unset($_SESSION['space']); ?>
             
         </div>
         
