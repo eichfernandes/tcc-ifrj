@@ -36,10 +36,11 @@
                     
                     <!-- PUXANDO DADOS -->
                     <?php
-                        $idir=$_GET['id'];
-                        $query = "select nome,foto from diretores where id_diretor='".$idir."'";
+                        $id = mysqli_real_escape_string($mysqli, $_GET['id']);
+                        $query = "select * from diretores where id_diretor='$id' or nome='$id';";
                         $result = mysqli_query($mysqli, $query);
                         $row = mysqli_fetch_assoc($result);
+                        $idir = $row['id_diretor'];
                         $foto = $row['foto'];
                         $nome = $row['nome'];
                     ?>

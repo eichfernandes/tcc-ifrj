@@ -1,7 +1,7 @@
 <?php include 'conexao.php';
 session_set_cookie_params(3600*24*7);
 session_start();
-$user = $_GET['u'];
+$user = mysqli_real_escape_string($mysqli, $_GET['u']);
 
 $query = "select * from usuarios where id_usuario='$user' or usuario='$user'";
 $result = mysqli_query($mysqli, $query);
@@ -20,8 +20,23 @@ $usuario = $row['usuario'];
 $nome = $row['nome'];
 $sobrenome = $row['sobrenome'];
 
-
-
+if (isset($_SESSION['id_usuario'])){
+    
+    $result = mysqli_query($mysqli,"select * from amizades where id_usuario='".$_SESSION['id_usuario']."' and "
+            . "id_amigo='$id';");
+    $valid = mysqli_num_rows($result);
+    if($valid==1){
+        $friend=true;
+        $self = false;
+    }else{
+        if($_SESSION['id_usuario']==$id){
+            $self = true;
+        }else{$friend = false; $self = false;};
+    };
+    
+}else{
+    $self = false;
+};
 
 ?>
 <!DOCTYPE html>
@@ -40,13 +55,42 @@ $sobrenome = $row['sobrenome'];
         
         <!-- Conteúdo -->
         <div style="display: flex; justify-content: space-between; align-items: center; height: 100%;">
-            <div class="content"><!-- Define o que estará no conteúdo central -->
+            <div class="content" style="width: 900px;"><!-- Define o que estará no conteúdo central -->
                 <div class="block"><!-- Cada div block é um bloco de conteúdo -->
-                    <h1><?php echo $row['usuario']; ?></h1>
-                    <h2 style="opacity: 60%;"><?php echo "'".$nome.' '.$sobrenome."'"; ?></h2>
+                    <div class="blockin" style="padding-bottom: 16px; display: flex;">
+                        <div style="width: 80%;">
+                            <h1 style="padding-bottom: 7px;"><?php echo $row['usuario']; ?></h1>
+                            <h2 style="opacity: 60%;"><?php echo "'".$nome.' '.$sobrenome."'"; ?></h2>
+                        </div>
+                        <?php if(!$self&&isset($_SESSION['id_usuario'])){ ?>
+                        <?php if(!$friend){ ?>
+                        <div style="text-align: right; width: 20%; padding: 15px 20px 0px;">
+                            <form id="remove" method="post">
+                                <input name="idir" type="hidden" value="<?php echo $id; ?>">
+                                <input type="button" class="adicionar" value="Seguir" onclick="this.disabled=true; remove();"
+                                       style="font-size: 18px;"/>
+                            </form>
+                        </div>
+                        <?php }else{ ?>
+                        <div style="text-align: right; width: 20%; padding: 15px 20px 0px;">
+                            <form id="remove" method="post">
+                                <input name="idir" type="hidden" value="<?php echo $id; ?>">
+                                <input type="button" class="remover" value="Parar de Seguir" onclick="this.disabled=true; remove();"
+                                       style="font-size: 18px;"/>
+                            </form>
+                        </div>
+                        <?php };}; ?>
+                    </div>
                 </div>
+                
+                
+                
+                
+                
+                
             </div>
         </div>
+        
         <!-- Rodapé -->
         <?php include "footer.php" ?> <!-- Rodapé da Página -->
         

@@ -1,19 +1,17 @@
 <?php session_start(); include "conexao.php";
 if (empty($_GET['id'])){header('Location: diretores.php');};
 
-$id = $_GET['id'];
-$query = "select * from diretores where id_diretor=$id";
+$id = mysqli_real_escape_string($mysqli, $_GET['id']);
+$query = "select * from diretores where id_diretor='$id' or nome='$id';";
 $result = mysqli_query($mysqli, $query);
 $valid = mysqli_num_rows($result);
+$row = mysqli_fetch_assoc($result);
 
 if($valid!=1){header('Location: index.php');
     exit();}
     
 // PUXANDO DADOS //
-$idir=$_GET['id'];
-$query = "select nome,foto from diretores where id_diretor='".$idir."'";
-$result = mysqli_query($mysqli, $query);
-$row = mysqli_fetch_assoc($result);
+$idir = $row['id_diretor'];
 $foto = $row['foto'];
 $nome = $row['nome'];
 

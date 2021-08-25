@@ -1,17 +1,30 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link href="style.css" rel="stylesheet">
+        <link rel="shortcut icon" href="icone.png" type="image/x-png">
 <?php include 'conexao.php';
 session_set_cookie_params(3600*24*7);
 session_start();
 if (empty($_GET['id'])){header('Location: index.php'); exit();}
 
-$id = $_GET['id'];
-$query = "select * from filmes where id_filme=$id";
+$id = mysqli_real_escape_string($mysqli, $_GET['id']);
+$query = "select * from filmes where id_filme='$id' or titulo='$id' or aka='$id';";
 
 $result = mysqli_query($mysqli, $query);
 $row = mysqli_fetch_assoc($result);
+$valid = mysqli_num_rows($result);
+
+if($valid!=1){
+    echo '<p style="padding: 10px;">Este Filme Não Existe...<br><a href="index.php">Voltar a Página Principal</a></p>';
+    exit();};
 
 if(empty($row['titulo'])){header('Location: index.php');
     exit();};
-        
+
+$id = $row['id_filme'];
 $titulo = $row['titulo'];
 $aka = $row['aka'];
 $ano = $row['ano'];
@@ -55,13 +68,7 @@ mysqli_free_result($result);
 
 
 ?>
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title>Me Indica - <?php echo $titulo; ?></title>
-        <link href="style.css" rel="stylesheet">
-        <link rel="shortcut icon" href="icone.png" type="image/x-png">
+        <title>Me Indica - <?php echo $aka; ?></title>
     </head>
     <body>
         <div class="semibody"><!-- Esta div está relacionada a tela e ajuda a ajustar as restantes -->
@@ -149,6 +156,7 @@ mysqli_free_result($result);
                     <!-- ADIÇÃO E REMOÇÃO DE TAG E DIRETOR -->
                     <?php if(isset($_SESSION['adm'])&&$_SESSION['adm']==1){ ?>
                         <div class="blockin" style="display: box; margin: 20px auto 0px; text-align: center;">
+                            <h1>ID do Filme [<?php echo $id; ?>]</h1>
                             <h1 style="margin-top: 8px;">Adicionar/Remover Tag/Diretor</h1>
                             <form style="margin-top: 20px; display: inline-block; margin-right: 38px;" method="post" action="adicionar_tag.php">
                                 <input name="idfil" type="hidden" value="<?php echo $id; ?>">
