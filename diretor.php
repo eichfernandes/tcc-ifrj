@@ -25,14 +25,6 @@ $nome = $row['nome'];
         <link rel="shortcut icon" href="icone.png" type="image/x-png">
     </head>
     <body>
-        
-        <?php if (isset($_SESSION['adm'])&&$_SESSION['adm']==1){
-            include "admin_diretor.php";
-            exit();
-        }; ?>
-        
-        
-        
         <div class="semibody"><!-- Esta div está relacionada a tela e ajuda a ajustar as restantes -->
         
         <!-- Cabeçalho -->
@@ -41,9 +33,15 @@ $nome = $row['nome'];
         <!-- Conteúdo -->
         <div style="display: flex; justify-content: space-between; align-items: center; height: 100%;">
             <div class="content" style="width: 780px;"><!-- Define o que estará no conteúdo central -->
+                
+                <!-- ERROS -->
+                <?php if(isset($_SESSION['addir_erro'])): ?>
+                    <div class="block" style="text-align: center; padding: 20px 30px 30px 30px; background-color: #771122;">
+                        Erro de Adição<br>Algum Campo Obrigatório Faltando
+                    </div>
+                <?php endif; unset($_SESSION['addir_erro']); ?>
+                
                 <div class="block"><!-- Cada div block é um bloco de conteúdo -->
-                    
-                    
                     
                     <!-- INFORMAÇÕES DO DIRETOR -->
                     <?php if(!empty($foto)){ ?>
@@ -51,12 +49,23 @@ $nome = $row['nome'];
                     <?php }; ?>
                     <div style="padding: 0px 11px; font-size: 14px;">
                         Diretor:
+                        <!-- ID if ADM -->
+                        <?php if (isset($_SESSION['adm'])&&$_SESSION['adm']==1){ ?>
+                            <div style="text-align: right; float: right;">ID:</div>
+                        <?php }; ?>
                     </div>
                     <div style="padding: 0px 11px 20px; font-size: 25px;">
                         <?php echo $nome; ?>
+                        <!-- ID if ADM -->
+                        <?php if (isset($_SESSION['adm'])&&$_SESSION['adm']==1){ ?>
+                            <div style="text-align: right; float: right;">
+                                [ <?php echo $idir; ?> ]
+                            </div>
+                        <?php }; ?>
                     </div>
 
                     <form method="post" action="diretor_pesquisa.php">
+                        <input name="idir" type="hidden" value="<?php $idir ?>"/>
                         <input class="searchbar" size="25" name="pesquisa" placeholder="Pesquisar"
                                value="<?php if(!empty($_SESSION['pesquisadirfil'])){echo $_SESSION['pesquisadirfil'];}; ?>">
                         <select name="ordem" style="float: right; padding: 7px 9px;" class="order" onchange="this.form.submit()">
@@ -68,6 +77,13 @@ $nome = $row['nome'];
                                 value="filmes.nota_media, filmes.aka">Nota ↓</option>
                             <option <?php if(!empty($_SESSION['ordemdirfil'])&&$_SESSION['ordemdirfil']=='filmes.nota_media desc, filmes.aka'){echo "selected";}?>
                                 value="filmes.nota_media desc, filmes.aka">Nota ↑</option>
+                            <!-- Ordens de ADM -->
+                            <?php if (isset($_SESSION['adm'])&&$_SESSION['adm']==1){ ?>
+                                <option <?php if(!empty($_SESSION['ordemdirfil'])&&$_SESSION['ordemdirfil']=='filmes.id_filme'){echo "selected";}?> 
+                                    value="filmes.id_filme">ID ↓</option>
+                                <option <?php if(!empty($_SESSION['ordemdirfil'])&&$_SESSION['ordemdirfil']=='filmes.id_filme desc'){echo "selected";}?>
+                                    value="filmes.id_filme desc">ID ↑</option>
+                            <?php }; ?>
                         </select>
                     </form>
                     
@@ -100,7 +116,8 @@ $nome = $row['nome'];
                                 Filmes:<br>
                             </div>
                             <div style="padding: 0px 11px 0px; font-size: 18px;">
-                                Título - ( Ano )<div style="text-align: right; float: right;"> Nota</div>
+                                Título - ( Ano )<div style="text-align: right; float: right;"> Nota 
+                                <?php if (isset($_SESSION['adm'])&&$_SESSION['adm']==1){echo ' - [ ID ]';}; ?></div>
                             </div>
                         <?php };
                         
@@ -117,12 +134,49 @@ $nome = $row['nome'];
                                     '<input name="id" type="hidden" value="'.$id.'">'
                                     . '<div class="listclick" onClick="document.forms.form'.$id.'.submit();">'.
                                     $aka.' - ('.$ano.')<div style="float: right;">'
-                                        .$nota.' ★</div>'
-                                .'</div></form>';
+                                        .$nota.' ★';
+                                if (isset($_SESSION['adm'])&&$_SESSION['adm']==1){echo  ' - [ '.$id.' ]';};
+                                echo '</div></div></form>';
                             };
                         };
                         mysqli_free_result($result);
                     ?>
+                    
+                    <!-- ADICIONANDO FILMES -->
+                    <?php if (isset($_SESSION['adm'])&&$_SESSION['adm']==1){ ?>
+                    <div  style="font-size: 20px; width: 370px; padding-bottom: 35px; margin: 30px auto 0px;" class="blockin">
+                        <form method="post" action="adicionar_filme.php">
+                            <h2 style="margin: 10px 0px;">Adicionar Filme</h2>
+                            
+                            Título: <input name="titulo" type="text" class="searchbarblack" maxlength="100" size="30"
+                                style="margin: 10px 0px 0px;" placeholder="Título em Inglês ou Mais Famoso"><br>
+
+                            AKA: <input name="aka" type="text" class="searchbarblack" maxlength="100" size="30"
+                                style="margin: 10px 0px 0px;" placeholder="Título em Português se Existir"><br>
+
+                            Lançamento: <input name="ano" type="number" class="searchbarblack" min="1850" max="3000" size="4"
+                                style="margin: 10px 0px 0px;" placeholder="(Ano)" maxlength="4"><br>
+                            
+                            <input name="idir" type="hidden" value="<?php echo $idir; ?>">
+                            <input type="submit" class="but" value="Adicionar" onclick="this.disabled=true;this.value='Aguarde...';this.form.submit();"
+                                   style="text-align: center;font-size: 16px; margin-top: 10px;"/>
+                        </form>
+                    </div>
+                    <!-- DELETAR DIRETOR -->
+                    <div style="text-align: center; margin-top: 10px;">
+                        <form id="remove" method="post" action="remover_diretor.php">
+                            <input name="idir" type="hidden" value="<?php echo $idir; ?>">
+                            <input type="button" class="remover" value="Deletar Diretor" onclick="this.disabled=true; remove();"
+                                style="text-align: center; font-size: 16px; margin-top: 10px;"/>
+                        </form>
+                    </div>
+                    <script>
+                        function remove() {
+                          if (confirm("Tem Certeza que Deseja Deletar este Diretor?")) {
+                            document.getElementById("remove").submit();}else{location.reload();};
+                        }
+                    </script>
+                    <?php }; ?>
                 </div>
             </div>
         </div>

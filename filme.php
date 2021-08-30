@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -18,6 +17,7 @@ $row = mysqli_fetch_assoc($result);
 $valid = mysqli_num_rows($result);
 
 if($valid!=1){
+    echo '<title>Me Indica - ???</title>';
     echo '<p style="padding: 10px;">Este Filme Não Existe...<br><a href="index.php">Voltar a Página Principal</a></p>';
     exit();};
 
@@ -196,6 +196,30 @@ mysqli_free_result($result);
                                     this.value='Aguarde...';this.form.submit();"
                                     style="text-align: center;font-size: 16px;margin-left: 10px;"/>
                             </form>
+                            <h1>Adicionar Poster</h1>
+                            <form style="margin-top: 20px;" method="post" action="adicionar_tag.php">
+                                <input name="idfil" type="hidden" value="<?php echo $id; ?>">
+                                <input name="poster" type="text" class="searchbarblack" placeholder="URL da Imagem" size="63">
+                                <input id="poster" type="submit" class="but" value="Adicionar" onclick="this.disabled=true;
+                                    document.getElementById('tag').disabled=true;document.getElementById('dir').disabled=true;
+                                    document.getElementById('retag').disabled=true;document.getElementById('redir').disabled=true;
+                                    this.value='Aguarde...';this.form.submit();"
+                                    style="text-align: center;font-size: 16px;margin-left: 10px;"/>
+                            </form>
+                            <!-- DELETAR FILME -->
+                            <div style="text-align: center; margin: 0px 0px 8px;">
+                                <form id="remove" method="post" action="remover_filme.php">
+                                    <input name="idfil" type="hidden" value="<?php echo $id; ?>">
+                                    <input type="button" class="remover" value="Deletar Filme" onclick="this.disabled=true; remove();"
+                                        style="text-align: center; font-size: 16px; margin-top: 10px;"/>
+                                </form>
+                            </div>
+                            <script>
+                                function remove() {
+                                  if (confirm("Tem Certeza que Deseja Deletar este Filme?")) {
+                                    document.getElementById("remove").submit();}else{location.reload();};
+                                }
+                            </script>
                         </div>
                     <?php }; ?>
                 </div>

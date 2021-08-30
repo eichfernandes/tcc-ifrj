@@ -1,6 +1,12 @@
+<title>Aguarde...</title>
 <link href="style.css" rel="stylesheet">
 <link rel="shortcut icon" href="icone.png" type="image/x-png">
 <?php include "conexao.php"; session_start();
+
+if(empty($_POST['idfil'])||(empty($_POST['tag'])&&empty($_POST['diretor'])&&empty($_POST['poster']))){
+    ?><script>history.go(-1)</script><?php
+    exit();
+}
 
 $idfil = $_POST['idfil'];
 
@@ -17,7 +23,7 @@ if (!empty($_POST['tag'])){
         $result = mysqli_query($mysqli, $query);
         ?><script>history.go(-1)</script><?php exit();
     }else{$_SESSION['adtag_erro']=true;};
-};
+}else{
 
 if (!empty($_POST['diretor'])){
     $diretor = mysqli_real_escape_string($mysqli, $_POST['diretor']);
@@ -33,5 +39,11 @@ if (!empty($_POST['diretor'])){
     }else{$_SESSION['addir_erro']=true;};
 };
 
+if (!empty($_POST['poster'])){
+    $url = mysqli_real_escape_string($mysqli, $_POST['poster']);
+    $result = mysqli_query($mysqli, "update filmes set banner='$url' where id_filme = $idfil;");
+};
+
+}
 ?><script>history.go(-1)</script><?php
 exit();

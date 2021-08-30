@@ -65,21 +65,32 @@ if (isset($_SESSION['id_usuario'])){
                         <?php if(!$self&&isset($_SESSION['id_usuario'])){ ?>
                         <?php if(!$friend){ ?>
                         <div style="text-align: right; width: 20%; padding: 15px 20px 0px;">
-                            <form id="remove" method="post">
-                                <input name="idir" type="hidden" value="<?php echo $id; ?>">
-                                <input type="button" class="adicionar" value="Seguir" onclick="this.disabled=true; remove();"
+                            <form id="adfollow" method="post" action="follow.php">
+                                <input name="iduser" type="hidden" value="<?php echo $id; ?>">
+                                <input name="follow" type="hidden" value="a">
+                                <input type="button" class="adicionar" value="Seguir" onclick="this.disabled=true; adfollow();"
                                        style="font-size: 18px;"/>
                             </form>
                         </div>
                         <?php }else{ ?>
                         <div style="text-align: right; width: 20%; padding: 15px 20px 0px;">
-                            <form id="remove" method="post">
-                                <input name="idir" type="hidden" value="<?php echo $id; ?>">
-                                <input type="button" class="remover" value="Parar de Seguir" onclick="this.disabled=true; remove();"
+                            <form id="stopfollow" method="post" action="follow.php">
+                                <input name="iduser" type="hidden" value="<?php echo $id; ?>">
+                                <input name="follow" type="hidden" value="r">
+                                <input type="button" class="remover" value="Parar de Seguir" onclick="this.disabled=true; stopfollow();"
                                        style="font-size: 18px;"/>
                             </form>
                         </div>
                         <?php };}; ?>
+                        <script>
+                            function adfollow() {
+                                document.getElementById("adfollow").submit();
+                            };
+                            function stopfollow() {
+                                if (confirm("Tem Certeza que Deseja Parar de Seguir <?php echo $usuario; ?>?")){
+                                    document.getElementById("stopfollow").submit();}else{location.reload();};
+                            };
+                        </script>
                     </div>
                 </div>
                 

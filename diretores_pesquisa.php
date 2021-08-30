@@ -9,8 +9,8 @@ if(empty($_POST['ordem'])&&empty($_POST['pesquisa'])){
     exit();
 };
 
-$_SESSION['ordemdirfil']=$_POST['ordem'];
-$_SESSION['pesquisadirfil']=$_POST['pesquisa'];
+$_SESSION['ordemdir']=$_POST['ordem'];
+$_SESSION['pesquisadir']=$_POST['pesquisa'];
 
 ?><script>history.go(-1)</script><?php
 exit();

@@ -1,3 +1,4 @@
+<title>Aguarde...</title>
 <link href="style.css" rel="stylesheet">
 <link rel="shortcut icon" href="icone.png" type="image/x-png">
 <?php include "conexao.php"; session_start();
