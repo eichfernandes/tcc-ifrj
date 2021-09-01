@@ -64,7 +64,7 @@ if (isset($_SESSION['id_usuario'])){
                         </div>
                         <?php if(!$self&&isset($_SESSION['id_usuario'])){ ?>
                         <?php if(!$friend){ ?>
-                        <div style="text-align: right; width: 20%; padding: 15px 20px 0px;">
+                        <div style="text-align: right; width: 20%; padding: 15px 20px 0px; margin-top: 10px;">
                             <form id="adfollow" method="post" action="follow.php">
                                 <input name="iduser" type="hidden" value="<?php echo $id; ?>">
                                 <input name="follow" type="hidden" value="a">
@@ -73,7 +73,7 @@ if (isset($_SESSION['id_usuario'])){
                             </form>
                         </div>
                         <?php }else{ ?>
-                        <div style="text-align: right; width: 20%; padding: 15px 20px 0px;">
+                        <div style="text-align: right; width: 20%; padding: 15px 20px 0px; margin-top: 10px;">
                             <form id="stopfollow" method="post" action="follow.php">
                                 <input name="iduser" type="hidden" value="<?php echo $id; ?>">
                                 <input name="follow" type="hidden" value="r">

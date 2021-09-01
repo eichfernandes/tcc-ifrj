@@ -40,6 +40,17 @@ a.link{
 a.link:hover{
     color: #339966; cursor: pointer;
 }
+input.link{
+    font-size: 40px;
+    transition: all 0.3s ease 0s;
+    text-decoration: none;
+    font-weight: 400;
+    background: none;
+    border: none;
+}
+input.link:hover{
+    color: #339966; cursor: pointer;
+}
 .but{
     border: none;
     border-radius: 50px;
@@ -172,7 +183,6 @@ a.remover, input.remover{
     font-weight: 500;
     padding: 4px 5px;
     text-align: center;
-    margin-top: 10px;
     border-radius: 3px;
     border: none;
 }
@@ -185,7 +195,6 @@ a.adicionar, input.adicionar{
     font-weight: 500;
     padding: 4px 5px;
     text-align: center;
-    margin-top: 10px;
     border-radius: 3px;
     border: none;
 }
