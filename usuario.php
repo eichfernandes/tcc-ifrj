@@ -77,7 +77,8 @@ if (isset($_SESSION['id_usuario'])){
                             <form id="stopfollow" method="post" action="follow.php">
                                 <input name="iduser" type="hidden" value="<?php echo $id; ?>">
                                 <input name="follow" type="hidden" value="r">
-                                <input type="button" class="remover" value="Parar de Seguir" onclick="this.disabled=true; stopfollow();"
+                                <input type="button" class="seguindo" value="Seguindo" onmouseover="this.value='Deixar de Seguir'"
+                                       onmouseout="this.value='Seguindo'" onclick="this.disabled=true; stopfollow();"
                                        style="font-size: 18px;"/>
                             </form>
                         </div>

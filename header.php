@@ -20,7 +20,7 @@
                 </ul>
                 <?php }else{ ?>
                 <ul>
-                    <li><a class="link" href="amigos.php?p=seguindo">Amigos</a></li> |
+                    <li><a class="link" href="amigos.php?p=seguindo">Perfis</a></li> |
                     <li><a class="link" href="usuario.php?u=<?php echo $_SESSION['usuario'];
                         ?>"><?php echo $_SESSION['usuario']; ?></a></li>
                     <li><a class="but" href="logout.php">Sair</a></li>

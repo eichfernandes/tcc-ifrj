@@ -190,6 +190,19 @@ a.remover:hover, input.remover:hover{
     background-color: rgb(102, 0, 0, 0.6);
     cursor: pointer;
 }
+a.seguindo, input.seguindo{
+    background-color: #16181d;
+    font-weight: 500;
+    padding: 4px 5px;
+    text-align: center;
+    border-radius: 3px;
+    border: none;
+    content: 'seguindo';
+}
+a.seguindo:hover, input.seguindo:hover{
+    background-color: rgb(102, 0, 0, 0.6);
+    cursor: pointer;
+}
 a.adicionar, input.adicionar{
     background-color: rgb(51, 153, 102, 1);
     font-weight: 500;

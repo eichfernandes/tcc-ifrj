@@ -86,7 +86,7 @@
                                 $nome=$row['nome'];
                                 $id=$row['id_diretor'];
                                 echo '<form name="form'.$id.'" method="get" action="diretor.php">'.
-                                    '<input name="id" type="hidden" value="'.$id.'">'.
+                                    '<input name="id" type="hidden" value="'.$nome.'">'.
                                     '<div class="listclick" onClick="document.forms.form'.$id.'.submit();">'.
                                     $nome;
                                 if (isset($_SESSION['adm'])&&$_SESSION['adm']==1){echo '<div style="float: right;">[ '.$id.' ]</div>';};

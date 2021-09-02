@@ -131,7 +131,7 @@ $nome = $row['nome'];
                                 $nota=number_format($row['nota'], 1, '.');
                                 
                                 echo '<form name="form'.$id.'" method="get" action="filme.php">'.
-                                    '<input name="id" type="hidden" value="'.$id.'">'
+                                    '<input name="id" type="hidden" value="'.$aka.'">'
                                     . '<div class="listclick" onClick="document.forms.form'.$id.'.submit();">'.
                                     $aka.' - ('.$ano.')<div style="float: right;">'
                                         .$nota.' ★';

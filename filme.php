@@ -66,8 +66,26 @@ if ($result){
 };
 mysqli_free_result($result);
 
+if(!empty($_GET['p'])){
+    $type = $_GET['p'];
+    if($type != 'amigos'&&$type != 'sinopses'&&$type != 'avaliacoes'){
+        header('Location: index.php');
+        exit();
+    };
+}else{
+    $type = "amigos";
+};
+
+if($type=="amigos"){$tt="#amg";}
+elseif($type=="sinopses"){$tt="#sin";}
+elseif($type=="avaliacoes"){$tt="#ava";};
 
 ?>
+        <style>
+            <?php echo $tt; ?>{background-color: #16181d; border-radius: 50px;
+            padding: 9px 20px;}
+            <?php echo $tt; ?>:hover{color: #F3F4F9;}
+        </style>
         <title>Me Indica - <?php echo $aka; ?></title>
     </head>
     <body>
@@ -221,6 +239,22 @@ mysqli_free_result($result);
                                 }
                             </script>
                         </div>
+                    <?php }; ?>
+                    
+                    
+                    <!-- ABAS -->
+                    <div class="blockin" style="margin: 20px 0px 0px 0px;"><!-- Cada div block é um bloco de conteúdo -->
+                        <div style="display: flex; justify-content: space-between; width: 600px; margin: 10px auto 0px;
+                            align-items: center; font-size: 20px; margin-bottom: 30px;">
+                            <a id="amg" class="link" href="filme.php?id=<?php echo $aka; ?>&p=amigos">Notas de Amigos</a>
+                            |<a id="sin" class="link" href="filme.php?id=<?php echo $aka; ?>&p=sinopses">Sinopses</a>
+                            |<a id="ava" class="link" href="filme.php?id=<?php echo $aka; ?>&p=avaliacoes">Avaliações</a>
+                        </div>
+                    </div>
+                    
+                    <!-- Seguindo -->
+                    <?php if($type == "seguindo"){ ?>
+                    
                     <?php }; ?>
                 </div>
             </div>
