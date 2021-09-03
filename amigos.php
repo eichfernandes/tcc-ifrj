@@ -81,10 +81,10 @@ elseif($type=="buscar perfis"){$tt="#bp";};
                             $id = $row['id'];
                             ?>
                     <div class="blockin" style="font-size: 20px; width: 500px; margin: auto; display: flex; margin-bottom: 16px;">
-                        <did style="width: 70%;">
+                        <div style="width: 70%;">
                             <a class="link" href="usuario.php?u=<?php echo $user; ?>">
                             <?php echo $user; ?></a>
-                        </did>
+                        </div>
                         <div style="text-align: right; width: 30%; padding: 0px;">
                             <form id="stopfollow" method="post" action="follow.php">
                                 <input name="iduser" type="hidden" value="<?php echo $id; ?>">

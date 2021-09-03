@@ -9,6 +9,10 @@ session_set_cookie_params(3600*24*7);
 session_start();
 if (empty($_GET['id'])){header('Location: index.php'); exit();}
 
+if(isset($_SESSION['id_usuario'])){
+    $iduser = $_SESSION['id_usuario'];
+}
+
 $id = mysqli_real_escape_string($mysqli, $_GET['id']);
 $query = "select * from filmes where id_filme='$id' or titulo='$id' or aka='$id';";
 
@@ -82,9 +86,13 @@ elseif($type=="avaliacoes"){$tt="#ava";};
 
 ?>
         <style>
-            <?php echo $tt; ?>{background-color: #16181d; border-radius: 50px;
+            <?php echo $tt; ?>{background-color: #2f3037; border-radius: 50px;
             padding: 9px 20px;}
             <?php echo $tt; ?>:hover{color: #F3F4F9;}
+            #amg, #sin, #ava{padding: 9px 20px;}
+            textarea::-webkit-scrollbar{
+                width: 0;
+            }
         </style>
         <title>Me Indica - <?php echo $aka; ?></title>
     </head>
@@ -161,7 +169,7 @@ elseif($type=="avaliacoes"){$tt="#ava";};
                             </p>
                             
                             <!-- NOTAS -->
-                            <h2 style="margin-top: 10px; display: inline-block;">Nota: <?php echo $nota; ?>★</h2>
+                            <h2 style="margin-top: 10px; display: inline-block;">Nota: <?php echo $nota; ?> ★</h2>
                             <h3 style="margin: 0px 0px 0px 25px; display: inline-block;">Nº de Avaliadores: <?php echo $ava; ?></h3>
                             <?php if(isset($_SESSION['usuario'])){ ?>
                             <p style="margin-top: 5px"><text style="font-size: 25px;">Sua Nota: <text style="font-size: 27px;">
@@ -243,19 +251,128 @@ elseif($type=="avaliacoes"){$tt="#ava";};
                     
                     
                     <!-- ABAS -->
-                    <div class="blockin" style="margin: 20px 0px 0px 0px;"><!-- Cada div block é um bloco de conteúdo -->
-                        <div style="display: flex; justify-content: space-between; width: 600px; margin: 10px auto 0px;
-                            align-items: center; font-size: 20px; margin-bottom: 30px;">
-                            <a id="amg" class="link" href="filme.php?id=<?php echo $aka; ?>&p=amigos">Notas de Amigos</a>
-                            |<a id="sin" class="link" href="filme.php?id=<?php echo $aka; ?>&p=sinopses">Sinopses</a>
-                            |<a id="ava" class="link" href="filme.php?id=<?php echo $aka; ?>&p=avaliacoes">Avaliações</a>
+                    <div style="display: flex; justify-content: space-between; width: 600px; margin: 30px auto 0px;
+                        align-items: center; font-size: 20px; margin-bottom: 30px;">
+                        <a id="amg" class="link" href="filme.php?id=<?php echo $aka; ?>&p=amigos">Notas de Amigos</a>
+                        |<a id="sin" class="link" href="filme.php?id=<?php echo $aka; ?>&p=sinopses">Sinopses</a>
+                        |<a id="ava" class="link" href="filme.php?id=<?php echo $aka; ?>&p=avaliacoes">Avaliações</a>
+                    </div>
+
+
+                    <!-- Amigos -->
+                    <?php if($type == "amigos"){ ?>
+                    <form method="get" style="text-align: center;" action="filme.php">
+                        <input name="id" type="hidden" value="<?php echo $aka; ?>">
+                        <input name="p" type="hidden" value="<?php echo $type; ?>">
+                        <input class="searchbar" name="pesquisa" type="text" placeholder="Pesquisar" size="40" value="<?php if(isset($_GET['pesquisa'])){echo $_GET['pesquisa'];} ?>">
+                        <select class="searchbar" name="ordem" style="margin-left: 10px;" onchange="this.form.submit()">
+                            <option <?php if(isset($_GET['ordem'])&&$_GET['ordem']=="A-Z"){echo "selected";} ?>>A-Z</option>
+                            <option <?php if(isset($_GET['ordem'])&&$_GET['ordem']=="Z-A"){echo "selected";} ?>>Z-A</option>
+                            <option <?php if(isset($_GET['ordem'])&&$_GET['ordem']=="1-5"){echo "selected";} ?>>1-5</option>
+                            <option <?php if(isset($_GET['ordem'])&&$_GET['ordem']=="5-1"){echo "selected";} ?>>5-1</option>
+                        </select>
+                    </form>
+                    <?php
+                    if(isset($_GET['pesquisa'])&&$_GET['pesquisa']!=""){
+                        $pesq = " and (usuario like '%".mysqli_real_escape_string($mysqli, $_GET['pesquisa'])."%'"
+                                . " or nota like '%".mysqli_real_escape_string($mysqli, $_GET['pesquisa'])."')";
+                    }else{$pesq = "";}
+                    
+                    if(isset($_GET['ordem'])){
+                    if($_GET['ordem']=="Z-A"){
+                        $ordem = " order by usuario desc";
+                    }elseif($_GET['ordem']=="1-5"){$ordem = " order by nota, usuario";
+                    }elseif($_GET['ordem']=="5-1"){$ordem = " order by nota desc, usuario";
+                    }else{$ordem = " order by usuario";}}else{$ordem = " order by usuario";}
+                    
+                    $query = "SELECT usuarios.usuario as 'usuario', usuarios.id_usuario as 'id',"
+                            . " notas.nota as 'nota' FROM notas inner join usuarios on usuarios.id_usuario=notas.id_usuario"
+                            . " inner join amizades on usuarios.id_usuario=amizades.id_amigo"
+                            . " and amizades.id_usuario=$iduser where notas.id_filme=$id"
+                            . $pesq . $ordem;
+                    $result = mysqli_query($mysqli, $query);
+                    $valid = mysqli_num_rows($result);
+                    if($result&&$valid>=1){
+                    while($row = mysqli_fetch_assoc($result)){
+                        $amigo = $row['usuario'];
+                        $id_amg = $row['id'];
+                        $nota_amg = $row['nota'];
+                        ?>
+                    <div class="blockin" style="font-size: 20px; width: 550px; margin: auto; display: flex; margin-bottom: 16px;">
+                        <div style="width: 70%;">
+                            <a class="link" href="usuario.php?u=<?php echo $amigo; ?>"><?php echo $amigo; ?></a>
+                        </div>
+                        <div style="width: 30%; text-align: right;">
+                            <?php echo "$nota_amg ★" ?>
                         </div>
                     </div>
-                    
-                    <!-- Seguindo -->
-                    <?php if($type == "seguindo"){ ?>
-                    
+                    <?php
+                    }
+                    }else{ ?>
+                    <div style="text-align: center; font-size: 25px;">
+                        -----------------------------------------------<br>
+                        Nenhum amigo avaliou este filme.<br>
+                        -----------------------------------------------
+                    </div>
                     <?php }; ?>
+                    <?php }; ?>
+                    
+                    
+                    
+                    <!-- Sinopses -->
+                    <?php if($type == "sinopses"){ ?>
+                    <?php
+                    $query = "select * from sinopses_avaliacoes where id_usuario=$iduser and id_filme=$id and s_a=0;";
+                    $result = mysqli_query($mysqli, $query);
+                    $valid = mysqli_num_rows($result);
+                    if($valid == 1){
+                        echo "Tamo";
+                    }else{ ?>
+                    <div class="blockin" style="margin: auto; width: 600px; padding: 15px 15px; font-size: 18px; text-align: center;">
+                        <form>
+                            <textarea maxlength="1100" placeholder="Escreva sua Sinopse aqui..." class="block" style="width: 570px;
+                                    font-size: 20px; resize: none; border: none; outline: none; padding: 12px 15px;
+                                    margin: 0px;" id="textarea" onkeypress="auto_grow(this)" onkeyup="auto_grow(this)"></textarea>
+                            Sua Sinopse
+                            <input type="button" class="adicionar" value="Publicar" style="margin: 10px 3px 0px 0px;
+                                    font-size: 16px;">
+                        </form>
+                    </div>
+                    <?php }
+                    ?>
+                    <?php }; ?>
+                    
+                    
+                    
+                    <!-- Avaliações -->
+                    <?php if($type == "avaliacoes"){ ?>
+                    <?php
+                    $query = "select * from sinopses_avaliacoes where id_usuario=$iduser and id_filme=$id and s_a=1;";
+                    $result = mysqli_query($mysqli, $query);
+                    $valid = mysqli_num_rows($result);
+                    if($valid == 1){
+                        echo "Tamo";
+                    }else{ ?>
+                    <div class="blockin" style="margin: auto; width: 600px; padding: 15px 15px; font-size: 18px; text-align: center;">
+                        <form>
+                            <textarea maxlength="1100" placeholder="Escreva sua Avaliação aqui..." class="block" style="width: 570px;
+                                    font-size: 20px; resize: none; border: none; outline: none; padding: 12px 15px;
+                                    margin: 0px;" id="textarea" onkeypress="auto_grow(this)" onkeyup="auto_grow(this)"></textarea>
+                            Sua Avaliação
+                            <input type="button" class="adicionar" value="Publicar" style="margin: 10px 3px 0px 0px;
+                                    font-size: 16px;">
+                        </form>
+                    </div>
+                    <?php }
+                    ?>
+                    <?php }; ?>
+                    
+                    <script type="text/javascript">
+                        function auto_grow(element){
+                            element.style.height = "5px";
+                            element.style.height = (element.scrollHeight)+"px";
+                        }
+                    </script>
                 </div>
             </div>
         </div>
