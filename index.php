@@ -24,6 +24,7 @@ if($page <= 0){
 $begin = 0 + 10*($page-1);
 $end = 10 + 10*($page-1);
 
+$alltags = "";
 ?>
 <!DOCTYPE html>
 <html>
@@ -55,7 +56,7 @@ $end = 10 + 10*($page-1);
                                 <?php if($all==1){echo "checked";} ?>>Filtrar Tags</label></div>
                             <?php if($all==1){ ?>
                             <?php 
-                            $alltags = "";
+                            
                             $result = mysqli_query($mysqli, "select * from tags;");
                             if($result){
                                 while($row = mysqli_fetch_assoc($result)){
@@ -65,15 +66,15 @@ $end = 10 + 10*($page-1);
                             <div style="display: inline-block; margin-bottom: 8px;">
                             <label class="tagw"><input name="<?php echo $tag; ?>" type="checkbox" class="check" onclick="this.form.submit()"
                                 <?php if(isset($_GET[$tag])){echo "checked";
-                                if($t==1){$alltags = $alltags." and classificacoes.id_tag=$idtag";}else{$alltags = "classificacoes.id_tag=$idtag";
-                                $t=1;}} ?>> - <?php echo $tag ?></label></div>
+                                $alltags = $alltags." and classificacoes.id_filme ="
+                                        . " any (select id_filme from classificacoes where id_tag=$idtag)";} ?>> - <?php echo $tag ?></label></div>
                             <?php }}} ?>
                         </div>
                         
                         <!-- PESQUISA -->
                         
                         <input name="s" type="text" maxlength="70" size="40" class="searchbar" placeholder="Pesquisar Filmes"
-                               <?php if(isset($s)&&$s!=''){echo "value='$s'";} ?> style="margin-bottom: 20px;">
+                               <?php if(isset($s)&&$s!=''){echo "value='$s'";} ?> style="margin-bottom: 10px;">
                         <div style="float: right;">
                             <span style="font-size: 18px;">Ordem: </span><select name="o" class="searchbar" onchange="this.form.submit()">
                                 <option value="nota desc" <?php if(isset($o)&&$o=="nota desc"){echo "selected"; $or=1;} ?>>
@@ -101,9 +102,6 @@ $end = 10 + 10*($page-1);
                         <!-- RESULTADOS -->
                         <?php
                         
-                        if(isset($alltags)&&$alltags != ""){$alltags = " and (".$alltags.")";}
-                        elseif($all==1){$alltags = " and (classificacoes.id_tag=0)";}else{$alltags = "";}
-                        
                         if(!isset($or)||$or!=1){
                             $o = " order by nota desc";
                         }else{$o = " order by ".$o;}
@@ -112,10 +110,10 @@ $end = 10 + 10*($page-1);
                             $pesquisa = mysqli_real_escape_string($mysqli, $_GET['s']);
                         }else{$pesquisa = "";}
                         
-                        $query = "SELECT filmes.aka as 'aka', filmes.titulo as 'titulo', filmes.nota_media as 'nota' from classificacoes"
-                        . " join filmes on classificacoes.id_filme=filmes.id_filme"
+                        $query = "SELECT filmes.aka as 'aka', filmes.titulo as 'titulo', filmes.nota_media as 'nota' from filmes"
+                        . " join classificacoes on classificacoes.id_filme=filmes.id_filme"
                         . " where (aka like '%$pesquisa%' or titulo like '%$pesquisa%')".$alltags
-                        . " group by aka".$o.";";
+                        . " group by classificacoes.id_filme".$o.";";
                         $result = mysqli_query($mysqli, $query);
                         $numrows = mysqli_num_rows($result);
                         if($numrows%10>=1){
@@ -131,11 +129,13 @@ $end = 10 + 10*($page-1);
                         
                         $query = "SELECT filmes.aka as 'aka', filmes.banner as 'poster', filmes.id_filme as 'idfil',"
                         . " filmes.titulo as 'titulo', filmes.nota_media as 'nota', filmes.ano as 'ano'"
-                        . " from classificacoes"
-                        . " join filmes on classificacoes.id_filme=filmes.id_filme"
+                        . " from filmes"
+                        . " join classificacoes on classificacoes.id_filme=filmes.id_filme"
                         . " where (aka like '%$pesquisa%' or titulo like '%$pesquisa%')".$alltags
                         . " group by aka".$o
                         . " limit ".$begin.",".$end.";";
+                        
+                        
                         
                         $result = mysqli_query($mysqli, $query); ?>
                         
@@ -143,7 +143,7 @@ $end = 10 + 10*($page-1);
                         <?php
                         if($result&&$numrows>=1){
                             while($row = mysqli_fetch_assoc($result)){ ?>
-                        <div class="listclick" style="margin-bottom: 15px; padding: 0px; display: flex; border-radius:10px;"
+                        <div class="listclick" style="margin-bottom: 20px; padding: 0px; display: flex; border-radius:10px;"
                              onclick="location.href='filme.php?id=<?php echo $row['aka'] ?>';">
                             <?php if(isset($row['poster'])){ ?>
                             <div style="max-width: 18%; display: block">
@@ -178,21 +178,23 @@ $end = 10 + 10*($page-1);
                             
                         <?php } ?>
                         </div>
-                        <div style="text-align: center;">
-                            <input name="page" type="submit" value="<?php $page ?>" style="display: none;">
-                            <?php if($page>1){ ?>
-                            <a name="page" type="submit" class="link" href="<?php if(isset($_GET['page'])){echo str_replace("page=".$_GET['page'], "page=".($page-1), $_SERVER['REQUEST_URI']);}
-                            else{echo $_SERVER['REQUEST_URI']."?&page=".($page-1);} ?>"
-                                   style="font-size: 30px; font-weight: 500"><</a>
-                            <?php } ?>
-                            <text style="font-size: 30px;"><?php echo "Página ".$page." de ".$total ?></text>
-                            <?php if($page<$total){ ?>
-                            <a name="page" type="submit" class="link" href="<?php if(isset($_GET['page'])){echo str_replace("page=".$_GET['page'], "page=".($page+1), $_SERVER['REQUEST_URI']);}
-                            else{echo $_SERVER['REQUEST_URI']."?&page=".($page+1);} ?>"
-                                   style="font-size: 30px; font-weight: 500">></a>
-                            <?php }; ?>
-                        </div>
+                        
                     </form>
+                    <div style="text-align: center;">
+                        <input name="page" type="submit" value="<?php $page ?>" style="display: none;">
+                        <?php if($page>1){ ?>
+                        <a name="page" class="link" href="<?php if(isset($_GET['page'])){echo str_replace("page=".$_GET['page'], "page=".($page-1), $_SERVER['REQUEST_URI']);}
+                        else{echo $_SERVER['REQUEST_URI']."?&page=".($page-1);} ?>"
+                               style="font-size: 30px; font-weight: 500"><</a>
+                        <?php } ?>
+                        <text style="font-size: 30px;"><?php echo "Página ".$page." de ".$total ?></text>
+                        <?php if($page<$total){ ?>
+                        <a name="page" class="link" href="<?php if(isset($_GET['page'])){echo str_replace("page=".$_GET['page'], "page=".($page+1), $_SERVER['REQUEST_URI']);}
+                        elseif(strpos($_SERVER['REQUEST_URI'], ".php?")){echo str_replace(".php?", ".php?page=".($page+1)."&", $_SERVER['REQUEST_URI']);}
+                        else{echo str_replace(".php", ".php?page=".($page+1)."&", $_SERVER['REQUEST_URI']);} ?>"
+                               style="font-size: 30px; font-weight: 500">></a>
+                        <?php }; ?>
+                    </div>
                 </div>
             </div>
         </div>
