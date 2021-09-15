@@ -49,6 +49,8 @@ $alltags = "";
             <div class="content" style="width: 900px;"><!-- Define o que estará no conteúdo central -->
                 <div class="block"><!-- Cada div block é um bloco de conteúdo -->
                     <form method="get">
+                        <h1 style="font-size: 50px; text-align: center; margin: 0px 0px 30px">--- Me Indica BD ---</h1>
+                        
                         <!-- TAGS -->
                         <div style="margin: 0px 0px 20px;text-align: center;">
                             <div style="margin-bottom: 10px;">
@@ -64,8 +66,8 @@ $alltags = "";
                                     $idtag = $row['id_tag'];
                             ?>
                             <div style="display: inline-block; margin-bottom: 8px;">
-                            <label class="tagw"><input name="<?php echo $tag; ?>" type="checkbox" class="check" onclick="this.form.submit()"
-                                <?php if(isset($_GET[$tag])){echo "checked";
+                            <label class="tagw"><input name="<?php echo str_replace(" ","_",$tag); ?>" type="checkbox" class="check" onclick="this.form.submit()"
+                                <?php if(isset($_GET[str_replace(" ","_",$tag)])){echo "checked";
                                 $alltags = $alltags." and classificacoes.id_filme ="
                                         . " any (select id_filme from classificacoes where id_tag=$idtag)";} ?>> - <?php echo $tag ?></label></div>
                             <?php }}} ?>

@@ -81,14 +81,25 @@ elseif($type=="avaliacoes"){$tt="#ava";};
         <div style="display: flex; justify-content: space-between; align-items: center; height: 100%;">
             <div class="content" style="width: 900px;"><!-- Define o que estará no conteúdo central -->
                 <div class="block"><!-- Cada div block é um bloco de conteúdo -->
-                    <div class="blockin" style="padding-bottom: 16px; display: flex;">
-                        <div style="width: 80%;">
+                    <div style="width: 700px; margin: 0px auto 20px; text-align: center">
+                        <?php 
+                        $resultseg = mysqli_query($mysqli, "select (select count(id_usuario) from amizades where id_usuario=1)"
+                                . " as 'Seguindo', (select count(id_amigo) from amizades where id_amigo=1) as 'Seguidores'");
+                        $rowseg = mysqli_fetch_assoc($resultseg);
+                        ?>
+                        <span style="font-size: 16px; opacity: 70%">
+                        Tem <?php echo number_format($rowseg['Seguidores'],0,",","."); if($rowseg['Seguidores']==1){echo " Seguidor";}else{echo " Seguidores";} ?><br>
+                        e Segue <?php echo number_format($rowseg['Seguindo'],0,",","."); if($rowseg['Seguindo']==1){echo " pessoa";}else{echo " pessoas";} ?></span>
+                    </div>
+                    <div class="blockin" style="padding-bottom: 16px; text-align: center; width: 550px; margin: auto;">
+                        
+                        <div style="width: 100%;">
                             <h1 style="padding-bottom: 7px;"><?php echo $row['usuario']; ?></h1>
                             <h2 style="opacity: 60%;"><?php echo "'".$nome.' '.$sobrenome."'"; ?></h2>
                         </div>
                         <?php if(!$self&&isset($_SESSION['id_usuario'])){ ?>
                         <?php if(!$friend){ ?>
-                        <div style="text-align: right; width: 20%; padding: 15px 20px 0px; margin-top: 10px;">
+                        <div style="text-align: center; width: 100%; padding:0px; margin-top: 10px;">
                             <form id="adfollow" method="post" action="follow.php">
                                 <input name="iduser" type="hidden" value="<?php echo $id; ?>">
                                 <input name="follow" type="hidden" value="a">
@@ -97,7 +108,7 @@ elseif($type=="avaliacoes"){$tt="#ava";};
                             </form>
                         </div>
                         <?php }else{ ?>
-                        <div style="text-align: right; width: 20%; padding: 15px 20px 0px; margin-top: 10px;">
+                        <div style="text-align: center; width: 100%; padding:0px; margin-top: 10px;">
                             <form id="stopfollow" method="post" action="follow.php">
                                 <input name="iduser" type="hidden" value="<?php echo $id; ?>">
                                 <input name="follow" type="hidden" value="r">
@@ -117,6 +128,8 @@ elseif($type=="avaliacoes"){$tt="#ava";};
                             };
                         </script>
                     </div>
+                    
+                    
                     
                     
                     <!-- ABAS -->
