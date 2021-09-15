@@ -32,12 +32,12 @@ header ul li{
     display: inline-block;
     padding: 0px 15px;
 }
-a.link{
+.link{
     transition: all 0.3s ease 0s;
     text-decoration: none;
     font-weight: 400;
 }
-a.link:hover{
+.link:hover{
     color: #339966; cursor: pointer;
 }
 input.link{
@@ -173,6 +173,17 @@ a.tag{
 a.tag:hover{
     background-color: rgb(22, 24, 29, 0.7);
 }
+.tagw{
+    text-decoration: none;
+    padding: 1px 3px;
+    border: none;
+    border-radius: 5px;
+    background-color: rgb(47, 48, 55);
+}
+.tagw:hover{
+    background-color: rgb(47, 48, 55, 0.7);
+    cursor: pointer;
+}
 .blockin{
     border-radius: 6px;
     background-color: #2f3037;
@@ -215,9 +226,56 @@ a.adicionar:hover, input.adicionar:hover{
     background-color: rgb(51, 153, 102, 0.6);
     cursor: pointer;
 }
+.up{
+    border: none;
+    background: none;
+    font-size: 21px;
+    opacity: 50%;
+}
+.down{
+    border: none;
+    background: none;
+    font-size: 21px;
+    opacity: 50%;
+}
+.up:hover{
+    color: #40bf80;
+    cursor: pointer;
+    opacity: 100%;
+}
+.down:hover{
+    color: #b31933;
+    cursor: pointer;
+    opacity: 100%;
+}
+.upa{
+    color: #40bf80;
+    border: none;
+    background: none;
+    font-size: 21px;
+    opacity: 50%;
+}
+.downa{
+    color: #b31933;
+    border: none;
+    background: none;
+    font-size: 21px;
+    opacity: 50%;
+}
+.upa:hover{
+    opacity: 100%;
+    cursor: pointer;
+}
+.downa:hover{
+    opacity: 100%;
+    cursor: pointer;
+}
 
 
 /*///// Login /////*/
 input[type="checkbox"]{
     filter: brightness(114%) contrast(114%) hue-rotate(95deg) saturate(47%) invert(90%);
+}
+input[type="checkbox"]:hover{
+    cursor: pointer;
 }

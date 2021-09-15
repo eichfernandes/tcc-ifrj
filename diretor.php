@@ -77,6 +77,10 @@ $nome = $row['nome'];
                                 value="filmes.nota_media, filmes.aka">Nota ↓</option>
                             <option <?php if(!empty($_SESSION['ordemdirfil'])&&$_SESSION['ordemdirfil']=='filmes.nota_media desc, filmes.aka'){echo "selected";}?>
                                 value="filmes.nota_media desc, filmes.aka">Nota ↑</option>
+                            <option <?php if(!empty($_SESSION['ordemdirfil'])&&$_SESSION['ordemdirfil']=='filmes.ano, filmes.aka'){echo "selected";}?>
+                                value="filmes.ano, filmes.aka">Ano ↓</option>
+                            <option <?php if(!empty($_SESSION['ordemdirfil'])&&$_SESSION['ordemdirfil']=='filmes.ano desc, filmes.aka'){echo "selected";}?>
+                                value="filmes.ano desc, filmes.aka">Ano ↑</option>
                             <!-- Ordens de ADM -->
                             <?php if (isset($_SESSION['adm'])&&$_SESSION['adm']==1){ ?>
                                 <option <?php if(!empty($_SESSION['ordemdirfil'])&&$_SESSION['ordemdirfil']=='filmes.id_filme'){echo "selected";}?> 
@@ -100,6 +104,7 @@ $nome = $row['nome'];
                         if(isset($_SESSION['ordemdirfil'])){
                             $order = " order by " . $_SESSION['ordemdirfil'];
                         }else{$order = " order by filmes.id_filme"; };
+                        $order = mysqli_real_escape_string($mysqli, $order);
                     
                         $query = "select filmes.titulo as 'titulo', filmes.aka as 'aka', filmes.ano as 'ano', filmes.id_filme as 'id', filmes.nota_media as 'nota' "
                                 . "from filmes, direcao where filmes.id_filme=direcao.id_filme and direcao.id_diretor=".$idir." ".$pesquisa

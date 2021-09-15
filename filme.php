@@ -144,9 +144,9 @@ elseif($type=="avaliacoes"){$tt="#ava";};
                                     style="border-radius: 6px; display: block;">
                             </div>
                         <?php }; ?>
-                        <div style="margin: 0px 0px 0px 20px; width: 100%;" class="blockin">
+                        <div style="margin: 0px 0px 0px 20px; width: 100%;<?php if(!isset($_SESSION['usuario'])){echo 'padding-top: 20px; padding-bottom: 30px;';} ?>" class="blockin">
                             <!-- TITULO -->
-                            <h1 style="display: inline-block; padding: 0px 0px;<?php if(!isset($_SESSION['usuario'])){echo 'margin: 30px 0px 0px;';} ?>">
+                            <h1 style="display: inline-block; padding: 0px 0px;">
                                 <?php echo $aka ?></h1>
                             
                             <!-- ANO -->
@@ -169,11 +169,12 @@ elseif($type=="avaliacoes"){$tt="#ava";};
                             </p>
                             
                             <!-- NOTAS -->
-                            <h2 style="margin-top: 10px; display: inline-block;">Nota: <?php echo $nota; ?> ★</h2>
-                            <h3 style="margin: 0px 0px 0px 25px; display: inline-block;">Nº de Avaliadores: <?php echo $ava; ?></h3>
+                            <h2 style="margin-top: 10px; display: inline-block;">★ <?php echo $nota; ?></h2>
+                            <h3 style="margin: 0px 0px 0px 2px; display: inline-block; opacity: 50%; font-size: 14px;">
+                                de <?php echo $ava; ?> opniões</h3>
                             <?php if(isset($_SESSION['usuario'])){ ?>
-                            <p style="margin-top: 5px"><text style="font-size: 25px;">Sua Nota: <text style="font-size: 27px;">
-                                <?php include "stars.php"; ?></text></text></p>
+                            <p style="margin-top: 5px">
+                                <?php include "stars.php"; ?></p>
                             <?php }; ?>
                         </div>
                     </div>
@@ -253,14 +254,14 @@ elseif($type=="avaliacoes"){$tt="#ava";};
                     <!-- ABAS -->
                     <div style="display: flex; justify-content: space-between; width: 600px; margin: 30px auto 0px;
                         align-items: center; font-size: 20px; margin-bottom: 30px;">
-                        <a id="amg" class="link" href="filme.php?id=<?php echo $aka; ?>&p=amigos">Notas de Amigos</a>
+                        <a id="amg" class="link" href="filme.php?id=<?php echo $aka; ?>&p=amigos">Notas</a>
                         |<a id="sin" class="link" href="filme.php?id=<?php echo $aka; ?>&p=sinopses">Sinopses</a>
                         |<a id="ava" class="link" href="filme.php?id=<?php echo $aka; ?>&p=avaliacoes">Avaliações</a>
                     </div>
 
 
                     <!-- Amigos -->
-                    <?php if($type == "amigos"){ ?>
+                    <?php if($type == "amigos"){ if(isset($_SESSION['id_usuario'])){ ?>
                     <form method="get" style="text-align: center;" action="filme.php">
                         <input name="id" type="hidden" value="<?php echo $aka; ?>">
                         <input name="p" type="hidden" value="<?php echo $type; ?>">
@@ -311,61 +312,191 @@ elseif($type=="avaliacoes"){$tt="#ava";};
                     }else{ ?>
                     <div style="text-align: center; font-size: 25px;">
                         -----------------------------------------------<br>
-                        Nenhum amigo avaliou este filme.<br>
+                        Você não segue ninguém que avaliou este filme.<br>
                         -----------------------------------------------
                     </div>
                     <?php }; ?>
-                    <?php }; ?>
+                    <?php }else{ ?>
+                    <div style="text-align: center; font-size: 25px;">
+                        -----------------------------------------------<br>
+                        Logue-se para seguir usuários.<br>
+                        -----------------------------------------------
+                    </div>
+                    <?php };} ?>
                     
                     
                     
                     <!-- Sinopses -->
-                    <?php if($type == "sinopses"){ ?>
-                    <?php
-                    $query = "select * from sinopses_avaliacoes where id_usuario=$iduser and id_filme=$id and s_a=0;";
+                    <?php if($type == "sinopses" || $type == "avaliacoes"){
+                        if($type == "sinopses"){$sa=0;}else{$sa=1;}
+                    ?>
+                    <?php if(isset($iduser)){
+                    $query = "select *, date_format(data, '%d/%m/%Y') as 'dat', TIME_FORMAT(hora, '%H:%i') as 'hor'"
+                        . " from sinopses_avaliacoes where id_usuario=$iduser and id_filme=$id and s_a=$sa;";
                     $result = mysqli_query($mysqli, $query);
                     $valid = mysqli_num_rows($result);
-                    if($valid == 1){
-                        echo "Tamo";
-                    }else{ ?>
-                    <div class="blockin" style="margin: auto; width: 600px; padding: 15px 15px; font-size: 18px; text-align: center;">
-                        <form>
-                            <textarea maxlength="1100" placeholder="Escreva sua Sinopse aqui..." class="block" style="width: 570px;
+                    $row = mysqli_fetch_assoc($result);
+                    if($valid == 1 && !isset($_SESSION['edit'])){ ?>
+                        <div class="blockin" style="margin: 0px auto 60px; width: 600px; padding: 15px 15px; font-size: 18px; text-align: left;">
+                            <a style="font-size: 20px;"
+                                class="tag" href="usuario.php?u=<?php echo $_SESSION['usuario']; ?>">
+                                <?php echo $_SESSION['usuario']; ?></a>
+                            <p style="margin: 20px 0px 20px;"><?php echo nl2br($row['conteudo']); ?></p>
+                            <p>
+                                <form method="post" action="adicionar_sa.php">
+                                    <input name="sa" type="hidden" value="<?php echo $sa; ?>">
+                                    <input name="idfil" type="hidden" value="<?php echo $id; ?>">
+                                    <span style="font-size: 14px; opacity: 50%"><?php echo $row['dat']." - ".$row['hor']; ?></span>
+                                    <div style="float: right">
+                                        <input name="editar" class="seguindo" type="submit" value="Deletar">
+                                        <input name="editar" class="adicionar" type="submit" value="Editar">
+                                    </div>
+                                </form>
+                            </p>
+                        </div>
+                    <?php }else{ ?>
+                    <div class="blockin" style="margin: 0px auto 60px; width: 600px; padding: 15px 15px; font-size: 18px; text-align: center;">
+                        <form method="post" action="adicionar_sa.php">
+                            <input name="sa" type="hidden" value="<?php echo $sa; ?>">
+                            <input name="idfil" type="hidden" value="<?php echo $id; ?>">
+                            <textarea name="content" maxlength="1100" placeholder="Escreva sua Sinopse aqui..." class="block" style="width: 570px;
                                     font-size: 20px; resize: none; border: none; outline: none; padding: 12px 15px;
-                                    margin: 0px;" id="textarea" onkeypress="auto_grow(this)" onkeyup="auto_grow(this)"></textarea>
+                                    margin: 0px;" id="textarea" onkeypress="auto_grow(this)" onkeyup="auto_grow(this)"><?php
+                                    if(isset($_SESSION['edit'])){
+                                        echo $row['conteudo'];
+                                        unset($_SESSION['edit']);
+                                    }
+                                    ?></textarea>
                             Sua Sinopse
-                            <input type="button" class="adicionar" value="Publicar" style="margin: 10px 3px 0px 0px;
+                            <input type="submit" class="adicionar" value="Publicar" style="margin: 10px 3px 0px 0px;
                                     font-size: 16px;">
                         </form>
                     </div>
-                    <?php }
-                    ?>
-                    <?php }; ?>
                     
+                    <?php }} ?>
                     
+                    <!-- PESQUISA E ORDEM SINOPSES OU AVALIAÇÕES -->
+                    <form method="get" style="text-align: center; margin: 0px 0px 10px;" action="filme.php">
+                        <input name="id" type="hidden" value="<?php echo $aka; ?>">
+                        <input name="p" type="hidden" value="<?php echo $type; ?>">
+                        <?php if(isset($_SESSION['id_usuario'])){ ?>
+                        <div style="margin-bottom: 10px;">
+                            <label style=""><input name="seguindo" type="checkbox" onchange="this.form.submit()" <?php 
+                            if(isset($_GET['seguindo'])){echo "checked";} ?>> Mostrar apenas Perfis que você segue.</label>
+                        </div>
+                        <?php } ?>
+                        <input class="searchbar" name="pesquisa" type="text" placeholder="Pesquisar" size="40" value="<?php if(isset($_GET['pesquisa'])){echo $_GET['pesquisa'];} ?>"
+                               style="margin: 0px;">
+                        <select class="searchbar" name="ordem" style="margin: 0px 0px 0px 10px;" onchange="this.form.submit()">
+                            <option <?php if(isset($_GET['ordem'])&&$_GET['ordem']=="Maior Relevância"){echo "selected";} ?>>Maior Relevância</option>
+                            <option <?php if(isset($_GET['ordem'])&&$_GET['ordem']=="Menor Relevância"){echo "selected";} ?>>Menor Relevância</option>
+                            <option <?php if(isset($_GET['ordem'])&&$_GET['ordem']=="Usuario ↓"){echo "selected";} ?>>Usuario ↓</option>
+                            <option <?php if(isset($_GET['ordem'])&&$_GET['ordem']=="Usuario ↑"){echo "selected";} ?>>Usuario ↑</option>
+                            <option <?php if(isset($_GET['ordem'])&&$_GET['ordem']=="Mais Recente"){echo "selected";} ?>>Mais Recente</option>
+                            <option <?php if(isset($_GET['ordem'])&&$_GET['ordem']=="Menos Recente"){echo "selected";} ?>>Menos Recente</option>
+                        </select>
+                    </form>
                     
-                    <!-- Avaliações -->
-                    <?php if($type == "avaliacoes"){ ?>
                     <?php
-                    $query = "select * from sinopses_avaliacoes where id_usuario=$iduser and id_filme=$id and s_a=1;";
+                    
+                    if(isset($_GET['pesquisa'])&&$_GET['pesquisa']!=""){
+                        $p = mysqli_real_escape_string($mysqli, $_GET['pesquisa']);
+                        $pesq = " and u.usuario like '%$p%' ";
+                    }else{$pesq = " ";}
+                    
+                    if(isset($_GET['ordem'])){
+                        if($_GET['ordem']=="Menor Relevância"){
+                            $order = "relevancia, usuario";
+                        }elseif($_GET['ordem']=="Usuario ↓"){
+                            $order = "usuario, relevancia";
+                        }elseif($_GET['ordem']=="Usuario ↑"){
+                            $order = "usuario desc, relevancia";
+                        }elseif($_GET['ordem']=="Mais Recente"){
+                            $order = "a.data desc, a.hora desc, usuario";
+                        }elseif($_GET['ordem']=="Menos Recente"){
+                            $order = "a.data, a.hora, usuario";
+                        }else{$order = "relevancia desc, usuario";}
+                    }else{$order = "relevancia desc, usuario";}
+                    $order = mysqli_real_escape_string($mysqli, $order);
+                    
+                    // SINOPSES DA COMUNIDADE
+                    $query = "select a.id_sa as 'id_sa', a.conteudo as 'conteudo',"
+                        . " a.id_usuario as 'id_usuario', a.id_filme as 'id_filme',"
+                        . " a.s_a as 's_a', a.relevancia as 'relevancia',"
+                        . " date_format(a.data, '%d/%m/%Y') as 'dat',"
+                        . " TIME_FORMAT(a.hora, '%H:%i') as 'hor', u.usuario as 'usuario'"
+                        . " from sinopses_avaliacoes as a inner join usuarios as u on a.id_usuario=u.id_usuario"
+                        . " where a.id_filme=$id and a.s_a=$sa".$pesq."order by ".$order.";";
                     $result = mysqli_query($mysqli, $query);
                     $valid = mysqli_num_rows($result);
-                    if($valid == 1){
-                        echo "Tamo";
-                    }else{ ?>
-                    <div class="blockin" style="margin: auto; width: 600px; padding: 15px 15px; font-size: 18px; text-align: center;">
-                        <form>
-                            <textarea maxlength="1100" placeholder="Escreva sua Avaliação aqui..." class="block" style="width: 570px;
-                                    font-size: 20px; resize: none; border: none; outline: none; padding: 12px 15px;
-                                    margin: 0px;" id="textarea" onkeypress="auto_grow(this)" onkeyup="auto_grow(this)"></textarea>
-                            Sua Avaliação
-                            <input type="button" class="adicionar" value="Publicar" style="margin: 10px 3px 0px 0px;
-                                    font-size: 16px;">
-                        </form>
+                    if($result&&$valid>=1){
+                        while($row = mysqli_fetch_assoc($result)){ 
+                            if((isset($_SESSION['id_usuario'])&&$row['id_usuario']!=$_SESSION['id_usuario'])||!isset($_SESSION['id_usuario'])){ 
+                                $query = "select * from usuarios where id_usuario='{$row['id_usuario']}';";
+                                $result2 = mysqli_query($mysqli, $query);
+                                $rowuser = mysqli_fetch_assoc($result2); 
+                                $print = 1;
+                                if (isset($_GET['seguindo'])&&isset($_SESSION['id_usuario'])){
+                                    $query = "select * from amizades where id_usuario={$_SESSION['id_usuario']}"
+                                    . " and id_amigo={$rowuser['id_usuario']};";
+                                    $result_seg = mysqli_query($mysqli, $query);
+                                    $print = mysqli_num_rows($result_seg);
+                                }
+                                if ($print==1){ ?>
+                            <div class="blockin" style="margin: 20px auto; width: 600px; padding: 15px 15px; font-size: 18px; text-align: left;">
+                                <a style="font-size: 20px;"
+                                    class="tag" href="usuario.php?u=<?php echo $rowuser['usuario']; ?>">
+                                    <?php echo $rowuser['usuario']; ?></a>
+                                <p style="margin: 20px 0px 20px;"><?php echo nl2br($row['conteudo']); ?></p>
+                                <p>
+                                    <form method="post" action="adicionar_sa.php">
+                                        <input name="id_sa" type="hidden" value="<?php echo $row['id_sa']; ?>">
+                                        <input name="id_usuario" type="hidden" value="<?php echo $rowuser['id_usuario']; ?>">
+                                        <span style="font-size: 14px; opacity: 50%"><?php echo $row['dat']." - ".$row['hor']; ?></span>
+                                        
+                                        <div style="float: right;">
+                                            <?php 
+                                            // BONS
+                                            $query = "select count(avaliacao) as aval from avaliacoes_sa where id_sa={$row['id_sa']} and avaliacao=1;";
+                                            $result4 = mysqli_query($mysqli, $query);
+                                            $row4 = mysqli_fetch_assoc($result4);
+                                            $ups = $row4['aval'];
+                                            
+                                            // RUINS
+                                            $query = "select count(avaliacao) as aval from avaliacoes_sa where id_sa={$row['id_sa']} and avaliacao=-1;";
+                                            $result4 = mysqli_query($mysqli, $query);
+                                            $row4 = mysqli_fetch_assoc($result4);
+                                            $downs = $row4['aval'];
+                                            
+                                            if(isset($_SESSION['id_usuario'])){
+                                            $query = "select avaliacao from avaliacoes_sa where id_sa={$row['id_sa']}"
+                                            . " and id_usuario={$_SESSION['id_usuario']};";
+                                            $result3 = mysqli_query($mysqli, $query);
+                                            $row3 = mysqli_fetch_assoc($result3);
+                                            
+                                            ?>
+                                            <input name="aval" class="<?php if($row3['avaliacao']==1){echo "upa";}else{echo "up";} ?>" type="submit" value="▲"> <?php echo $ups; ?>
+                                            <input name="aval" class="<?php if($row3['avaliacao']==-1){echo "downa";}else{echo "down";} ?>" type="submit" value="▼"> <?php echo $downs; ?>
+                                            <?php }else{ ?>
+                                            ▲ <?php echo $ups; ?>
+                                            ▼ <?php echo $downs; ?>
+                                            <?php } ?>
+                                        </div>
+                                        
+                                    </form>
+                                </p>
+                            </div>
+                            <?php }}}
+                    }else{?>
+                    <div style="text-align: center; font-size: 25px;">
+                        -----------------------------------------------<br>
+                        Nenhum Resultado.<br>
+                        -----------------------------------------------
                     </div>
                     <?php }
-                    ?>
-                    <?php }; ?>
+                    }; ?>
+                    
+                    
                     
                     <script type="text/javascript">
                         function auto_grow(element){

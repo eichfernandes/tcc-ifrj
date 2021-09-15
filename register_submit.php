@@ -8,7 +8,7 @@ if (empty($_POST['usuario'])||empty($_POST['nome'])||
 empty($_POST['sobrenome'])||empty($_POST['senha'])||empty($_POST['senha2']))/* Validação Espaços Vazios */
 {
     $_SESSION['vazio']=true;
-    header("Location: register.php");
+    ?><script>history.go(-1)</script><?php
     exit();
 } else {
     $usuario = mysqli_real_escape_string($mysqli, $_POST['usuario']);

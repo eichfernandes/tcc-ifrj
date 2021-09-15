@@ -1,6 +1,29 @@
 <?php 
 session_set_cookie_params(3600*24*7);
 session_start();
+include "conexao.php";
+
+$t = 0;
+
+if(isset($_GET['s'])&&$_GET['s']!=""){
+    $s = $_GET['s'];
+};
+if(isset($_GET['o'])){
+    $o = $_GET['o'];
+};
+if(isset($_GET['todos'])){
+    $all = 1;
+}else{$all = 0;};
+
+if(isset($_GET['page'])){
+    $page = (int)$_GET['page'];
+}else{$page = 1;}
+if($page <= 0){
+    $page = 1;
+}
+$begin = 0 + 10*($page-1);
+$end = 10 + 10*($page-1);
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -9,6 +32,10 @@ session_start();
         <title>Me Indica - Avaliação de Filmes</title>
         <link href="style.css" rel="stylesheet">
         <link rel="shortcut icon" href="icone.png" type="image/x-png">
+        <style>
+            #all{display:none;}
+            img:hover{opacity: 60%}
+        </style>
     </head>
     <body>
         <div class="semibody"><!-- Esta div está relacionada a tela e ajuda a ajustar as restantes -->
@@ -18,36 +45,154 @@ session_start();
         
         <!-- Conteúdo -->
         <div style="display: flex; justify-content: space-between; align-items: center; height: 100%;">
-            <div class="content"><!-- Define o que estará no conteúdo central -->
+            <div class="content" style="width: 900px;"><!-- Define o que estará no conteúdo central -->
                 <div class="block"><!-- Cada div block é um bloco de conteúdo -->
-                    <h1>Título de Exemplo</h1><br>
-                    <p>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent sagittis nibh vel est rutrum, in euismod elit luctus. Nunc a nibh urna. Nulla quis velit a nulla vulputate tristique sed non justo. Donec ut risus eu orci rutrum ultrices nec nec sem. Praesent mauris augue, suscipit fermentum elit a, accumsan condimentum erat. Aenean eget est velit. Maecenas maximus mi eget mauris lacinia, et venenatis orci commodo. Suspendisse placerat quam vitae porttitor bibendum. Phasellus mattis leo quis quam imperdiet, sit amet suscipit lacus elementum. Sed nisl urna, sodales iaculis erat id, porta elementum erat. Quisque malesuada augue eu lorem finibus, at placerat risus porta. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum consectetur, nisi ac faucibus lobortis, ante mauris ornare arcu, a imperdiet leo arcu at ante. Aenean feugiat ipsum erat, a pretium lacus hendrerit quis. Quisque molestie libero eget nulla euismod, ac eleifend tortor semper. Sed euismod elit arcu, ut suscipit mauris eleifend pretium.
-                    <br><br>
-                    Sed nec quam iaculis, imperdiet sem sit amet, aliquet eros. Nunc et volutpat tortor. Quisque risus lorem, suscipit ac maximus in, feugiat aliquam est. Mauris non nisi quis dui finibus accumsan ac quis lectus. Nullam sed fringilla dolor. Aliquam consectetur leo ligula, et pharetra risus dictum non. Praesent auctor neque sed arcu feugiat dapibus. Donec nisl dolor, imperdiet vel enim egestas, laoreet laoreet arcu. Duis vulputate eget lacus vel sagittis. Curabitur arcu diam, tincidunt nec metus sit amet, scelerisque accumsan lectus. Integer interdum cursus tincidunt. Phasellus sollicitudin lobortis dolor, et iaculis elit eleifend nec. Curabitur massa velit, sollicitudin sed rutrum facilisis, dictum et elit. Vivamus pulvinar dapibus tellus ac faucibus. Pellentesque imperdiet interdum turpis at facilisis.
-                    <br><br>
-                    Nunc pulvinar tincidunt nisl nec finibus. Donec id eros blandit nunc efficitur posuere. Sed finibus neque sit amet quam egestas, vel suscipit purus pharetra. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin mi nulla, faucibus sit amet congue quis, placerat eu nisl. Aenean ornare id massa sed porta. In scelerisque lacus massa, at ultricies ligula tristique nec. Sed rhoncus nibh urna, in tincidunt velit scelerisque in.
-                    </p>
-                </div>
-                <div class="block">
-                    <h1>Lorem Ipsum</h1><br>
-                    <p>
-                    Sed dignissim in tellus sed commodo. Sed placerat, nunc sed vehicula pulvinar, sem diam auctor nisl, ut rhoncus odio urna vitae nulla. Vestibulum placerat id mauris id aliquet. Mauris malesuada malesuada viverra. Curabitur lacinia consequat fermentum. Sed fringilla tellus ante, ut consequat magna rhoncus sed. Nunc sollicitudin porttitor diam vel semper. Donec feugiat ex libero, pharetra posuere risus sagittis sed. Sed non purus nec mauris egestas posuere. Integer dapibus mauris at augue accumsan, a imperdiet lorem bibendum. Sed sapien purus, tristique sed dolor sed, fermentum euismod dui. Vestibulum rutrum malesuada odio id cursus. Nulla eu luctus enim. Sed nec nulla mi. Nunc vulputate tincidunt enim, at dignissim lectus luctus sit amet. Nam pulvinar orci tellus, et scelerisque ligula fringilla nec.
-                    <br><br>
-                    Sed lectus purus, maximus sed eros ut, rutrum aliquet justo. Praesent sagittis risus vitae turpis tincidunt lacinia. Aliquam tincidunt tristique ante. Duis felis nulla, vulputate a elit at, tristique hendrerit magna. Mauris leo augue, sagittis id nisi congue, convallis fringilla sem. Sed aliquam ante eget ligula hendrerit posuere. Nam maximus tortor vitae mauris condimentum condimentum. Cras quis magna orci. Suspendisse suscipit, tellus volutpat tincidunt convallis, tellus felis ornare tellus, eget hendrerit eros ex vitae nibh. Etiam euismod neque a justo ultrices, vel eleifend ex malesuada. Aenean ac rutrum leo, eu ullamcorper lorem. Nulla facilisi. Integer porttitor neque vitae finibus tincidunt. Morbi sed rhoncus mi, ut elementum augue. Quisque tristique, est non tristique egestas, massa massa eleifend elit, eu consequat elit tellus ut libero. In at faucibus neque.
-                    <br><br>
-                    Nunc pulvinar tincidunt nisl nec finibus. Donec id eros blandit nunc efficitur posuere. Sed finibus neque sit amet quam egestas, vel suscipit purus pharetra. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin mi nulla, faucibus sit amet congue quis, placerat eu nisl. Aenean ornare id massa sed porta. In scelerisque lacus massa, at ultricies ligula tristique nec. Sed rhoncus nibh urna, in tincidunt velit scelerisque in.
-                    </p>
-                </div>
-                <div class="block">
-                    <h1>Lectus Purus</h1><br>
-                    <p>
-                    Sed dignissim in tellus sed commodo. Sed placerat, nunc sed vehicula pulvinar, sem diam auctor nisl, ut rhoncus odio urna vitae nulla. Vestibulum placerat id mauris id aliquet. Mauris malesuada malesuada viverra. Curabitur lacinia consequat fermentum. Sed fringilla tellus ante, ut consequat magna rhoncus sed. Nunc sollicitudin porttitor diam vel semper. Donec feugiat ex libero, pharetra posuere risus sagittis sed. Sed non purus nec mauris egestas posuere. Integer dapibus mauris at augue accumsan, a imperdiet lorem bibendum. Sed sapien purus, tristique sed dolor sed, fermentum euismod dui. Vestibulum rutrum malesuada odio id cursus. Nulla eu luctus enim. Sed nec nulla mi. Nunc vulputate tincidunt enim, at dignissim lectus luctus sit amet. Nam pulvinar orci tellus, et scelerisque ligula fringilla nec.
-                    <br><br>
-                    Sed lectus purus, maximus sed eros ut, rutrum aliquet justo. Praesent sagittis risus vitae turpis tincidunt lacinia. Aliquam tincidunt tristique ante. Duis felis nulla, vulputate a elit at, tristique hendrerit magna. Mauris leo augue, sagittis id nisi congue, convallis fringilla sem. Sed aliquam ante eget ligula hendrerit posuere. Nam maximus tortor vitae mauris condimentum condimentum. Cras quis magna orci. Suspendisse suscipit, tellus volutpat tincidunt convallis, tellus felis ornare tellus, eget hendrerit eros ex vitae nibh. Etiam euismod neque a justo ultrices, vel eleifend ex malesuada. Aenean ac rutrum leo, eu ullamcorper lorem. Nulla facilisi. Integer porttitor neque vitae finibus tincidunt. Morbi sed rhoncus mi, ut elementum augue. Quisque tristique, est non tristique egestas, massa massa eleifend elit, eu consequat elit tellus ut libero. In at faucibus neque.
-                    <br><br>
-                    Nunc pulvinar tincidunt nisl nec finibus. Donec id eros blandit nunc efficitur posuere. Sed finibus neque sit amet quam egestas, vel suscipit purus pharetra. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Proin mi nulla, faucibus sit amet congue quis, placerat eu nisl. Aenean ornare id massa sed porta. In scelerisque lacus massa, at ultricies ligula tristique nec. Sed rhoncus nibh urna, in tincidunt velit scelerisque in.
-                    </p>
+                    <form method="get">
+                        <!-- TAGS -->
+                        <div style="margin: 0px 0px 20px;text-align: center;">
+                            <div style="margin-bottom: 10px;">
+                                <label class="tagw" style="font-size: 20px;"><input name="todos" id="all" type="checkbox" class="check" onclick="this.form.submit()"
+                                <?php if($all==1){echo "checked";} ?>>Filtrar Tags</label></div>
+                            <?php if($all==1){ ?>
+                            <?php 
+                            $alltags = "";
+                            $result = mysqli_query($mysqli, "select * from tags;");
+                            if($result){
+                                while($row = mysqli_fetch_assoc($result)){
+                                    $tag = $row['tag'];
+                                    $idtag = $row['id_tag'];
+                            ?>
+                            <div style="display: inline-block; margin-bottom: 8px;">
+                            <label class="tagw"><input name="<?php echo $tag; ?>" type="checkbox" class="check" onclick="this.form.submit()"
+                                <?php if(isset($_GET[$tag])){echo "checked";
+                                if($t==1){$alltags = $alltags." and classificacoes.id_tag=$idtag";}else{$alltags = "classificacoes.id_tag=$idtag";
+                                $t=1;}} ?>> - <?php echo $tag ?></label></div>
+                            <?php }}} ?>
+                        </div>
+                        
+                        <!-- PESQUISA -->
+                        
+                        <input name="s" type="text" maxlength="70" size="40" class="searchbar" placeholder="Pesquisar Filmes"
+                               <?php if(isset($s)&&$s!=''){echo "value='$s'";} ?> style="margin-bottom: 20px;">
+                        <div style="float: right;">
+                            <span style="font-size: 18px;">Ordem: </span><select name="o" class="searchbar" onchange="this.form.submit()">
+                                <option value="nota desc" <?php if(isset($o)&&$o=="nota desc"){echo "selected"; $or=1;} ?>>
+                                    Melhor Nota</option>
+
+                                <option value="nota" <?php if(isset($o)&&$o=="nota"){echo "selected";$or=1;} ?>>
+                                    Pior Nota</option>
+                                
+                                <option value="aka" <?php if(isset($o)&&$o=="aka"){echo "selected";$or=1;} ?>>
+                                    Título A-Z</option>
+
+                                <option value="aka desc" <?php if(isset($o)&&$o=="aka desc"){echo "selected";$or=1;} ?>>
+                                    Título Z-A</option>
+                                
+                                <option value="ano desc" <?php if(isset($o)&&$o=="ano desc"){echo "selected";$or=1;} ?>>
+                                    Mais Recente</option>
+
+                                <option value="ano" <?php if(isset($o)&&$o=="ano"){echo "selected";$or=1;} ?>>
+                                    Menos Recente</option>
+
+                            </select>
+                        </div>
+                    
+                        <div>
+                        <!-- RESULTADOS -->
+                        <?php
+                        
+                        if(isset($alltags)&&$alltags != ""){$alltags = " and (".$alltags.")";}
+                        elseif($all==1){$alltags = " and (classificacoes.id_tag=0)";}else{$alltags = "";}
+                        
+                        if(!isset($or)||$or!=1){
+                            $o = " order by nota desc";
+                        }else{$o = " order by ".$o;}
+                        
+                        if(isset($_GET['s'])){
+                            $pesquisa = mysqli_real_escape_string($mysqli, $_GET['s']);
+                        }else{$pesquisa = "";}
+                        
+                        $query = "SELECT filmes.aka as 'aka', filmes.titulo as 'titulo', filmes.nota_media as 'nota' from classificacoes"
+                        . " join filmes on classificacoes.id_filme=filmes.id_filme"
+                        . " where (aka like '%$pesquisa%' or titulo like '%$pesquisa%')".$alltags
+                        . " group by aka".$o.";";
+                        $result = mysqli_query($mysqli, $query);
+                        $numrows = mysqli_num_rows($result);
+                        if($numrows%10>=1){
+                            $x = 1;
+                        }else{$x = 0;}
+                        $tot = $numrows;
+                        $total = intdiv($numrows,10)+$x;
+                        if($total==0){$total=1;}
+                        
+                        if($page>$total){
+                            header("Location: ".$local.str_replace("page=".$_GET['page'], "page=1", $_SERVER['REQUEST_URI']));
+                        }
+                        
+                        $query = "SELECT filmes.aka as 'aka', filmes.banner as 'poster', filmes.id_filme as 'idfil',"
+                        . " filmes.titulo as 'titulo', filmes.nota_media as 'nota', filmes.ano as 'ano'"
+                        . " from classificacoes"
+                        . " join filmes on classificacoes.id_filme=filmes.id_filme"
+                        . " where (aka like '%$pesquisa%' or titulo like '%$pesquisa%')".$alltags
+                        . " group by aka".$o
+                        . " limit ".$begin.",".$end.";";
+                        
+                        $result = mysqli_query($mysqli, $query); ?>
+                        
+                        <span style="text-align: center; opacity: 50%; margin-left: 10px;"><?php echo $tot ?> resultados...</span>
+                        <?php
+                        if($result&&$numrows>=1){
+                            while($row = mysqli_fetch_assoc($result)){ ?>
+                        <div class="listclick" style="margin-bottom: 15px; padding: 0px; display: flex; border-radius:10px;"
+                             onclick="location.href='filme.php?id=<?php echo $row['aka'] ?>';">
+                            <?php if(isset($row['poster'])){ ?>
+                            <div style="max-width: 18%; display: block">
+                                <img src="<?php echo $row['poster'] ?>" width="100%" height="100%" style="border-radius: 10px 0px 0px 10px; display: block"
+                                    title="<?php echo $row['aka']." - '".$row['titulo']."' (".$row['ano'].")" ?>">
+                            </div>
+                            <?php } ?>
+                            <div style="display: inline-block; <?php if(isset($row['poster'])){echo "width: 82%;";}else{echo "width: 100%;";} ?> padding: 10px 20px;">
+                                <h2 style="font-size: 31px"><?php echo $row['aka'] ?></h2>
+                                <span style="font-size: 25px; opacity: 50%; font-style: italic;">'<?php echo $row['titulo'] ?>'</span><br>
+                                <span style="font-size: 27px; opacity: 80%;">(<?php echo $row['ano'] ?>) - ★ <?php echo $row['nota'] ?></span><br>
+                                <?php
+                                $query = "select diretores.nome as 'diretor' from direcao join diretores"
+                                        . " on direcao.id_diretor=diretores.id_diretor where direcao.id_filme={$row['idfil']};";
+                                $result2 = mysqli_query($mysqli, $query);
+                                if($result2){
+                                    while($row2 = mysqli_fetch_assoc($result2)){ ?>
+                                <a href="diretor.php?id=<?php echo $row2['diretor'] ?>" class="tag" style="line-height: 240%;">
+                                    <?php echo $row2['diretor'] ?></a>
+                                    <?php }
+                                }
+                                ?>
+                            </div>
+                        </div>
+                            <?php }
+                        }else{ ?>
+                        <div style="text-align: center; font-size: 25px; margin-bottom: 50px;"><br>
+                            -----------------------------------------------<br>
+                            Nenhum Resultado.<br>
+                            -----------------------------------------------
+                        </div>
+                            
+                        <?php } ?>
+                        </div>
+                        <div style="text-align: center;">
+                            <input name="page" type="submit" value="<?php $page ?>" style="display: none;">
+                            <?php if($page>1){ ?>
+                            <a name="page" type="submit" class="link" href="<?php if(isset($_GET['page'])){echo str_replace("page=".$_GET['page'], "page=".($page-1), $_SERVER['REQUEST_URI']);}
+                            else{echo $_SERVER['REQUEST_URI']."?&page=".($page-1);} ?>"
+                                   style="font-size: 30px; font-weight: 500"><</a>
+                            <?php } ?>
+                            <text style="font-size: 30px;"><?php echo "Página ".$page." de ".$total ?></text>
+                            <?php if($page<$total){ ?>
+                            <a name="page" type="submit" class="link" href="<?php if(isset($_GET['page'])){echo str_replace("page=".$_GET['page'], "page=".($page+1), $_SERVER['REQUEST_URI']);}
+                            else{echo $_SERVER['REQUEST_URI']."?&page=".($page+1);} ?>"
+                                   style="font-size: 30px; font-weight: 500">></a>
+                            <?php }; ?>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>

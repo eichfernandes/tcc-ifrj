@@ -67,8 +67,9 @@
                     </div>
                     <?php include "conexao.php";
                         if (!empty($_SESSION['pesquisadir'])){
-                            $pesquisa=' where nome like "%'.$_SESSION['pesquisadir'].'%"'
-                                    . ' or id_diretor like "%'.$_SESSION['pesquisadir'].'%"';
+                            $pesquisa = mysqli_real_escape_string($mysqli, $order);
+                            $pesquisa=' where nome like "%'.$pesquisa.'%"'
+                                    . ' or id_diretor like "%'.$pesquisa.'%"';
                         }else{$pesquisa='';};
                         
                         unset($_SESSION['pesquisadir']);
@@ -76,6 +77,7 @@
                         if(isset($_SESSION['ordemdir'])){
                             $ordem = " order by " . $_SESSION['ordemdir'];
                         }else{$ordem = " order by nome";};
+                        $ordem = mysqli_real_escape_string($mysqli, $ordem);
                         
                         $query = "select nome, id_diretor from diretores".$pesquisa.$ordem;
                         

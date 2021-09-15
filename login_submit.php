@@ -21,7 +21,7 @@
     $row = mysqli_fetch_assoc($result);
     
     
-    if ($valid==1&&$usuario==$row['usuario']){
+    if ($valid==1){
         $_SESSION['usuario']=$usuario;
         $_SESSION['nome']=$row['nome'];
         $_SESSION['sobrenome']=$row['sobrenome'];
@@ -32,6 +32,6 @@
     }
     else{
         $_SESSION['login_error']=true;
-        header('Location: login.php');
+        ?><script>history.go(-1)</script><?php
     };
 ?>

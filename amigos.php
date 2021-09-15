@@ -71,6 +71,7 @@ elseif($type=="buscar perfis"){$tt="#bp";};
                     if(isset($_GET['ordem'])&&$_GET['ordem']=="Z-A"){
                         $ordem = " order by usuario desc";
                     }else{$ordem = " order by usuario";}
+                    $ordem = mysqli_real_escape_string($mysqli, $ordem);
                     $query = "SELECT a.usuario as 'usuario', a.id_usuario as 'id' from amizades"
                             . " inner join usuarios as a on amizades.id_amigo=a.id_usuario where"
                             . " amizades.id_usuario=$idme".$pesq.$ordem;
@@ -178,7 +179,8 @@ elseif($type=="buscar perfis"){$tt="#bp";};
                                     $id = $row['id_usuario'];
                                     $result2 = mysqli_query($mysqli, "select * from amizades where"
                                         . " amizades.id_usuario='$idme' and amizades.id_amigo='$id';");
-                                    $foll = mysqli_num_rows($result2)
+                                    $foll = mysqli_num_rows($result2);
+                                    if($row['id_usuario']!=$idme){
                                 ?>
                     <div class="blockin" style="font-size: 20px; width: 500px; margin: auto; display: flex; margin-bottom: 16px;">
                         <did style="width: 70%;">
@@ -204,7 +206,7 @@ elseif($type=="buscar perfis"){$tt="#bp";};
                                     style="font-size: 18px;"/>
                             </form>
                         </div>
-                        <?php }; ?>
+                    <?php }}; ?>
                     </div>
                                 <?php
                                 };
