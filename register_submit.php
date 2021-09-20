@@ -28,6 +28,11 @@ empty($_POST['sobrenome'])||empty($_POST['senha'])||empty($_POST['senha2']))/* V
         ?><script>history.go(-1)</script><?php
         exit();
     };
+    if (strtolower($_POST['senha'])==$_POST['senha']||strtoupper($_POST['senha'])==$_POST['senha']||strlen($_POST['senha'])<8){
+        $_SESSION['segSenha']=true;
+        ?><script>history.go(-1)</script><?php
+        exit();
+    };
     if ($_POST['senha']!=$_POST['senha2']){
         $_SESSION['erroSenha']=true;
         ?><script>history.go(-1)</script><?php

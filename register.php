@@ -60,6 +60,11 @@ if (isset($_SESSION['usuario'])){
                 Erro: Este usuário já está em uso
             </div>
             <?php }; unset($_SESSION['repetido']); ?>
+            <?php if(isset($_SESSION['segSenha'])){ ?>
+            <div class="block" style="text-align: center; padding: 20px 30px 20px 30px; background-color: #771122;">
+                Erro: A senha precisa ter no mínimo 8 caracteres e letras maiúsculas e minúsculas
+            </div>
+            <?php }; unset($_SESSION['segSenha']); ?>
             <?php if(isset($_SESSION['erroSenha'])){ ?>
             <div class="block" style="text-align: center; padding: 20px 30px 20px 30px; background-color: #771122;">
                 Erro: As senhas não são iguais

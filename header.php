@@ -11,7 +11,7 @@
                 <li><a class="link" href="index.php">Início</a></li> |
                 <li><a class="link" href="diretores.php">Diretores</a></li>
             </ul>
-            <div class="title">Me Indica - Avaliação de Filmes</div>
+            <div class="title"><a class="link" href="index.php">Me Indica - Avaliação de Filmes</a></div>
             <div>
                 <?php if(!isset($_SESSION['usuario'])){ ?>
                 <ul>

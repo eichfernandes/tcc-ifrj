@@ -49,7 +49,7 @@ $alltags = "";
             <div class="content" style="width: 900px;"><!-- Define o que estará no conteúdo central -->
                 <div class="block"><!-- Cada div block é um bloco de conteúdo -->
                     <form method="get">
-                        <h1 style="font-size: 50px; text-align: center; margin: 0px 0px 30px">--- Me Indica BD ---</h1>
+                        <h1 style="font-size: 50px; text-align: center; margin: 0px 0px 30px">Me Indica - Lista de Filmes</h1>
                         
                         <!-- TAGS -->
                         <div style="margin: 0px 0px 20px;text-align: center;">
