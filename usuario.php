@@ -211,9 +211,9 @@ elseif($type=="avaliacoes"){$tt="#ava";};
                             <option <?php if(isset($_GET['ordem'])&&$_GET['ordem']=="Maior Relevância"){echo "selected";} ?>>Maior Relevância</option>
                             <option <?php if(isset($_GET['ordem'])&&$_GET['ordem']=="Menor Relevância"){echo "selected";} ?>>Menor Relevância</option>
                             <option <?php if(isset($_GET['ordem'])&&$_GET['ordem']=="Título ↓"){echo "selected";} ?>>Título ↓</option>
-                            <option <?php if(isset($_GET['ordem'])&&$_GET['ordem']=="Título ↑"){echo "selected";} ?>>Títlo ↑</option>
+                            <option <?php if(isset($_GET['ordem'])&&$_GET['ordem']=="Título ↑"){echo "selected";} ?>>Título ↑</option>
                             <option <?php if(isset($_GET['ordem'])&&$_GET['ordem']=="Mais Recente"){echo "selected";} ?>>Mais Recente</option>
-                            <option <?php if(isset($_GET['ordem'])&&$_GET['ordem']=="Menos Recente"){echo "selected";} ?>>Menos Recente</option>
+                            <option <?php if(isset($_GET['ordem'])&&$_GET['ordem']=="Mais Antigo"){echo "selected";} ?>>Mais Antigo</option>
                         </select>
                     </form>
                     
@@ -233,7 +233,7 @@ elseif($type=="avaliacoes"){$tt="#ava";};
                             $order = "aka desc, relevancia";
                         }elseif($_GET['ordem']=="Mais Recente"){
                             $order = "a.data desc, a.hora desc, aka";
-                        }elseif($_GET['ordem']=="Menos Recente"){
+                        }elseif($_GET['ordem']=="Mais Antigo"){
                             $order = "a.data, a.hora, aka";
                         }else{$order = "relevancia desc, aka";}
                     }else{$order = "relevancia desc, aka";}

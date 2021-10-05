@@ -96,7 +96,7 @@ $nome = $row['nome'];
                         
                         if(!empty($_SESSION['pesquisadirfil'])){
                             $pesq = mysqli_real_escape_string($mysqli,$_SESSION['pesquisadirfil']);
-                            $pesquisa="and (filmes.titulo like '%".$pesq."%' or filmes.aka like '%".$pesq."%') ";
+                            $pesquisa="and (filmes.titulo like '%".$pesq."%' or filmes.aka like '%".$pesq."%' or filmes.ano like '%".$pesq."%') ";
                         }else{$pesquisa="";};
                         
                         unset($_SESSION['pesquisadirfil']);

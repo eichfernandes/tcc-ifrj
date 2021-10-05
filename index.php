@@ -11,7 +11,7 @@ if(isset($_GET['s'])&&$_GET['s']!=""){
 if(isset($_GET['o'])){
     $o = $_GET['o'];
 };
-if(isset($_GET['todos'])){
+if(isset($_GET['filtrar'])){
     $all = 1;
 }else{$all = 0;};
 
@@ -54,7 +54,7 @@ $alltags = "";
                         <!-- TAGS -->
                         <div style="margin: 0px 0px 20px;text-align: center;">
                             <div style="margin-bottom: 10px;">
-                                <label class="tagw" style="font-size: 20px;"><input name="todos" id="all" type="checkbox" class="check" onclick="this.form.submit()"
+                                <label class="tagw" style="font-size: 20px;"><input name="filtrar" id="all" type="checkbox" class="check" onclick="this.form.submit()"
                                 <?php if($all==1){echo "checked";} ?>>Filtrar Tags</label></div>
                             <?php if($all==1){ ?>
                             <?php 
@@ -134,12 +134,14 @@ $alltags = "";
                         . " from filmes"
                         . " join classificacoes on classificacoes.id_filme=filmes.id_filme"
                         . " where (aka like '%$pesquisa%' or titulo like '%$pesquisa%')".$alltags
-                        . " group by aka".$o
+                        . " group by idfil".$o
                         . " limit ".$begin.",".$end.";";
                         
                         
                         
-                        $result = mysqli_query($mysqli, $query); ?>
+                        $result = mysqli_query($mysqli, $query);
+                        $numrows = mysqli_num_rows($result);
+                        ?>
                         
                         <span style="text-align: center; opacity: 50%; margin-left: 10px;"><?php echo $tot ?> resultados...</span>
                         <?php

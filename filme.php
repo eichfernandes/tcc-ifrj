@@ -164,7 +164,7 @@ elseif($type=="avaliacoes"){$tt="#ava";};
                             
                             <!-- TAGS -->
                             <p style="margin-top: 20px; line-height: 165%;">Tags: 
-                                <?php $y=1; while($y<=$z){ ?><a class="tag" href="#">
+                                <?php $y=1; while($y<=$z){ ?><a class="tag" href="index.php?filtrar=on&<?php echo $tag[$y]; ?>=on">
                                     <?php echo $tag[$y]; ?></a> <?php $y=$y+1;}; ?>
                             </p>
                             

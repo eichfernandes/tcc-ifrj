@@ -67,7 +67,7 @@
                     </div>
                     <?php include "conexao.php";
                         if (!empty($_SESSION['pesquisadir'])){
-                            $pesquisa = mysqli_real_escape_string($mysqli, $order);
+                            $pesquisa = mysqli_real_escape_string($mysqli, $_SESSION['pesquisadir']);
                             $pesquisa=' where nome like "%'.$pesquisa.'%"'
                                     . ' or id_diretor like "%'.$pesquisa.'%"';
                         }else{$pesquisa='';};
