@@ -195,7 +195,8 @@ $alltags = "";
                         <?php if($page<$total){ ?>
                         <a name="page" class="link" href="<?php if(isset($_GET['page'])){echo str_replace("page=".$_GET['page'], "page=".($page+1), $_SERVER['REQUEST_URI']);}
                         elseif(strpos($_SERVER['REQUEST_URI'], ".php?")){echo str_replace(".php?", ".php?page=".($page+1)."&", $_SERVER['REQUEST_URI']);}
-                        else{echo str_replace(".php", ".php?page=".($page+1)."&", $_SERVER['REQUEST_URI']);} ?>"
+                        elseif(strpos($_SERVER['REQUEST_URI'], ".php")){echo str_replace(".php", ".php?page=".($page+1)."&", $_SERVER['REQUEST_URI']);}
+                        else{echo $_SERVER['REQUEST_URI']."/index.php?page=".($page+1)."&";}; ?>"
                                style="font-size: 30px; font-weight: 500">></a>
                         <?php }; ?>
                     </div>

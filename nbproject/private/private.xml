@@ -7,10 +7,12 @@
             <file>file:/C:/xampp/htdocs/tcc-ifrj/register_submit.php</file>
             <file>file:/C:/xampp/htdocs/tcc-ifrj/filme.php</file>
             <file>file:/C:/xampp/htdocs/tcc-ifrj/diretor.php</file>
+            <file>file:/C:/xampp/htdocs/tcc-ifrj/conexao.php</file>
             <file>file:/C:/xampp/htdocs/tcc-ifrj/amigos.php</file>
             <file>file:/C:/xampp/htdocs/tcc-ifrj/header.php</file>
             <file>file:/C:/xampp/htdocs/tcc-ifrj/adicionar_sa.php</file>
             <file>file:/C:/xampp/htdocs/tcc-ifrj/footer.php</file>
+            <file>file:/C:/xampp/htdocs/tcc-ifrj/diretor_pesquisa.php</file>
             <file>file:/C:/xampp/htdocs/tcc-ifrj/stars.php</file>
             <file>file:/C:/xampp/htdocs/tcc-ifrj/usuario.php</file>
             <file>file:/C:/xampp/htdocs/tcc-ifrj/login.php</file>
@@ -18,6 +20,7 @@
             <file>file:/C:/xampp/htdocs/tcc-ifrj/register.php</file>
             <file>file:/C:/xampp/htdocs/tcc-ifrj/diretores.php</file>
             <file>file:/C:/xampp/htdocs/tcc-ifrj/style.css</file>
+            <file>file:/C:/xampp/htdocs/tcc-ifrj/diretores_pesquisa.php</file>
         </group>
     </open-files>
 </project-private>
